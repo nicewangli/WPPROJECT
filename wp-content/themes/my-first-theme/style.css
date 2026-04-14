@@ -1,0 +1,18 @@
+/*
+Theme Name: My First Theme
+Theme URI: https://example.com
+Author: Jackson
+Author URI: https://example.com
+Description: My first WordPress theme MVP.
+Version: 1.0.0
+Text Domain: my-first-theme
+*/
+
+body {
+    font-family: Arial, sans-serif;
+    padding: 40px;
+    background: #f7f7f7;
+  }
+  h1 {
+    color: #2271b1;
+  }
