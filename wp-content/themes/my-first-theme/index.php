@@ -2,7 +2,13 @@
 get_header();
 ?>
 <main>
-  <?php
+<?php
+global $wp_query;
+echo '<pre>';
+print_r($wp_query->request);
+echo '</pre>';
+?>
+  <!-- <?php
   $get_last_three_posts = new WP_Query(array(
     'post_type' => 'post',
     'orderby' => 'date',
@@ -10,9 +16,9 @@ get_header();
     'posts_per_page' => 3,
     'post_status' => 'publish'
   ));
-  ?>
-  <?php if ($get_last_three_posts->have_posts()): ?>
-  <?php while ($get_last_three_posts->have_posts()) : $get_last_three_posts->the_post(); ?>
+  ?> -->
+  <?php if (have_posts()): ?>
+  <?php while (have_posts()) : the_post(); ?>
   <article>
     <h2>
       <a href="<?php the_permalink(); ?>">
@@ -26,7 +32,6 @@ get_header();
   </article>
   <?php endwhile; 
   
-  wp_reset_postdata();
   ?>
   <?php else: ?>
     <p>暂无内容 git测试 csjp</p>
