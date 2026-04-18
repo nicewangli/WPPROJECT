@@ -1,24 +1,41 @@
-# OS / Editor
+########################################
+# WordPress repo policy (recommended)
+# Track only wp-content/, ignore everything else.
+########################################
+
+# Ignore everything by default (whitelist strategy)
+*
+
+# Allow traversing directories so negation rules work
+!*/
+
+# Keep this file tracked
+!.gitignore
+
+########################################
+# Allow wp-content (themes/plugins/mu-plugins)
+########################################
+!wp-content/
+!wp-content/**
+
+########################################
+# Runtime / generated content inside wp-content
+########################################
+wp-content/uploads/
+wp-content/cache/
+wp-content/upgrade/
+wp-content/backups*/
+wp-content/*.log
+
+########################################
+# OS / Editor (harmless even under whitelist)
+########################################
 .DS_Store
 Thumbs.db
 .vscode/
 .idea/
 
-# LocalWP / debug / local-only
+########################################
+# Local-only/debug
+########################################
 local-xdebuginfo.php
-*.log
-
-# Environment-specific config
-wp-config.php
-
-# Keep uploads out of repo (usually large/runtime files)
-wp-content/uploads/
-
-# Keep cache/runtime artifacts
-wp-content/cache/
-wp-content/upgrade/
-
-# Optional: keep mu-plugins/plugins/themes tracked as needed
-# If you only want your own theme tracked, uncomment below and adjust:
-# wp-content/themes/*
-# !wp-content/themes/my-first-theme/
