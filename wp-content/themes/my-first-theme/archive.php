@@ -8,7 +8,18 @@ get_header();
     <?php if (have_posts()) : ?>
         <?php while (have_posts()) : the_post(); ?>
             <?php get_template_part('template-parts/content', 'excerpt'); ?>
-        <?php endwhile; ?>
+        <?php endwhile; ?>  
+        <nav class="posts-pagination" aria-label="<?php esc_attr_e('Archive pagination', 'my-first-theme'); ?>">
+	<?php
+        the_posts_pagination(
+            array(
+                'mid_size'  => 1,
+                'prev_text' => __('上一页', 'my-first-theme'),
+                'next_text' => __('下一页', 'my-first-theme'),
+            )
+        );
+	?>
+        </nav>
     <?php else : ?>
         <?php get_template_part('template-parts/content', 'none'); ?>
     <?php endif; ?>

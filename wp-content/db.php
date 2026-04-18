@@ -1,0 +1,1 @@
+D:/Local Sites/wpproject/app/public/wp-content/plugins/query-monitor/wp-content/db.php
