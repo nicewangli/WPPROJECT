@@ -22,5 +22,30 @@ function my_first_theme_posts_pagination() {
 		);
 }
 
+function my_first_theme_display_reading_time($content) {
+    if ( is_single() && is_main_query() ) {
+        $post = get_post();
+        $word_count = str_word_count(strip_tags($post->post_content));
+        $reading_time = ceil($word_count / 300);
+        $reading_time_html = '<div class="reading-time">';
+        $reading_time_html .= '<span>📖 预计阅读时间：' . $reading_time . '分钟</span>';
+        $reading_time_html .= '</div>';
+        return $reading_time_html . $content;
+    }
+    return $content;
+}
+
+add_filter('the_content', 'my_first_theme_display_reading_time');
+
+function my_first_theme_add_title_prefix($title) {
+	if ( is_single() ) {
+		return '【' . $title . '】';
+	}
+	return $title;
+}
+
+
+add_filter('the_title', 'my_first_theme_add_title_prefix');
+
 add_action('pre_get_posts', 'my_first_modify_main_query');
 add_action('wp_enqueue_scripts', 'my_first_theme_enqueue_assets');
