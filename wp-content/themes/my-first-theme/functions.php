@@ -88,3 +88,36 @@ function my_first_theme_register_menus() {
 	);
 }
 add_action('after_setup_theme', 'my_first_theme_register_menus');
+
+//注册侧边栏
+function my_first_theme_register_sidebars() {
+	register_sidebar(
+		array(
+			'name' => '主侧边栏',
+			'id' => 'sidebar-main',
+			'description' => '用于显示博客文章或页面的侧边栏内容',
+			'before_widget' => '<div id="%1$s" class="widget %2$s">',
+			'after_widget' => '</div>',
+			'before_title' => '<h3 class="widget-title">',
+			'after_title' => '</h3>',
+		)
+	);
+}
+add_action('widgets_init', 'my_first_theme_register_sidebars');
+
+//注册页脚侧边栏小工具
+function my_first_theme_register_footer_sidebar() {
+	register_sidebar(
+		array(
+			'name' => '页脚侧边栏',
+			'id' => 'footer-sidebar',
+			'description' => '页脚侧边栏'
+		)
+	);
+}
+add_action('widgets_init','my_first_theme_register_footer_sidebar');
+
+//恢复经典小工具界面
+add_action('after_setup_theme', function() {
+    remove_theme_support('widgets-block-editor');
+});
