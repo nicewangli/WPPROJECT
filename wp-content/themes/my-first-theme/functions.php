@@ -191,3 +191,11 @@ function my_first_theme_db_debug() {
 	echo '</div>';
 }
 add_action('wp_footer','my_first_theme_db_debug');
+function my_theme_register_featured_menu() {
+    register_nav_menus(
+        array(
+            'featured-categories' => __('精选分类导航','my_first_theme')
+        )
+    );
+}
+add_action('after_setup_theme','my_theme_register_featured_menu');

@@ -18,6 +18,7 @@ echo '</pre>';
   ));
   ?> -->
   <?php if (have_posts()): ?>
+    <?php do_action('my_theme_featured_posts'); ?>
   <?php while (have_posts()) : the_post(); ?>
   <?php if (is_search()): ?>
     <?php get_template_part('template-parts/content','excerpt'); ?>
