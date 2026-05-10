@@ -121,3 +121,73 @@ add_action('widgets_init','my_first_theme_register_footer_sidebar');
 add_action('after_setup_theme', function() {
     remove_theme_support('widgets-block-editor');
 });
+
+function my_first_theme_db_debug() {
+	global $wpdb;
+	echo '<div style="background:#f5f5f5; padding:20px; margin:20px; border:2px solid #333; font-family:monospace; font-size:13px;">';
+    echo '<h2>🗄️ WP 数据架构调试面板</h2>';
+	$latest_post = $wpdb->get_row("SELECT * FROM {$wpdb->posts} WHERE post_status = 'publish' AND post_type = 'post' ORDER BY post_date DESC LIMIT 1");
+	echo '<h3>wp_posts表的最新文章：</h3>';
+	echo '<table border="1" cellpadding="5" cellspacing="0" style="border-collapse:collapse; width:100%; background:#fff;">';
+    echo '<tr style="background:#ddd;"><th>字段名</th><th>值</th></tr>';
+    if ($latest_post) {
+        foreach ($latest_post as $key => $value) {
+            $display_value = strlen($value) > 100 ? urldecode(substr($value, 0, 100)) . '...' : urldecode($value);
+            echo '<tr><td><strong>' . esc_html($key) . '</strong></td><td>' . esc_html($display_value) . '</td></tr>';
+        }
+    }
+    echo '</table>';
+	    if ($latest_post) {
+        $post_meta = $wpdb->get_results($wpdb->prepare(
+            "SELECT * FROM {$wpdb->postmeta} WHERE post_id = %d",
+            $latest_post->ID
+        ));
+
+        echo '<h3>📝 wp_postmeta 表（这篇文章的所有"便利贴"）</h3>';
+        echo '<table border="1" cellpadding="5" cellspacing="0" style="border-collapse:collapse; width:100%; background:#fff;">';
+        echo '<tr style="background:#ddd;"><th>meta_id</th><th>post_id</th><th>meta_key</th><th>meta_value</th></tr>';
+        if ($post_meta) {
+            foreach ($post_meta as $meta) {
+                $display_value = strlen($meta->meta_value) > 100 ? substr($meta->meta_value, 0, 100) . '...' : $meta->meta_value;
+                echo '<tr>';
+                echo '<td>' . esc_html($meta->meta_id) . '</td>';
+                echo '<td>' . esc_html($meta->post_id) . '</td>';
+                echo '<td><strong>' . esc_html($meta->meta_key) . '</strong></td>';
+                echo '<td>' . esc_html($display_value) . '</td>';
+                echo '</tr>';
+            }
+        } else {
+            echo '<tr><td colspan="4">这篇文章没有任何 postmeta 记录</td></tr>';
+        }
+        echo '</table>';
+
+        $post_terms = $wpdb->get_results($wpdb->prepare(
+            "SELECT t.name, t.slug, tt.taxonomy, tt.description
+             FROM {$wpdb->term_relationships} AS tr
+             INNER JOIN {$wpdb->term_taxonomy} AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
+             INNER JOIN {$wpdb->terms} AS t ON tt.term_id = t.term_id
+             WHERE tr.object_id = %d
+             ORDER BY tt.taxonomy, t.name",
+            $latest_post->ID
+        ));
+
+        echo '<h3>🏷️ 分类关联（三表联查结果）</h3>';
+        echo '<table border="1" cellpadding="5" cellspacing="0" style="border-collapse:collapse; width:100%; background:#fff;">';
+        echo '<tr style="background:#ddd;"><th>分类名(name)</th><th>别名(slug)</th><th>分类法(taxonomy)</th><th>描述</th></tr>';
+        if ($post_terms) {
+            foreach ($post_terms as $term) {
+                echo '<tr>';
+                echo '<td><strong>' . esc_html($term->name) . '</strong></td>';
+                echo '<td>' . esc_html($term->slug) . '</td>';
+                echo '<td>' . esc_html($term->taxonomy) . '</td>';
+                echo '<td>' . esc_html($term->description) . '</td>';
+                echo '</tr>';
+            }
+        } else {
+            echo '<tr><td colspan="4">这篇文章没有关联任何分类或标签</td></tr>';
+        }
+        echo '</table>';
+    }
+	echo '</div>';
+}
+add_action('wp_footer','my_first_theme_db_debug');
