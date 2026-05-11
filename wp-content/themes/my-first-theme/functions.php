@@ -191,6 +191,8 @@ function my_first_theme_db_debug() {
 	echo '</div>';
 }
 add_action('wp_footer','my_first_theme_db_debug');
+//D7汇总，精选区域
+//注册精选分类导航
 function my_theme_register_featured_menu() {
     register_nav_menus(
         array(
@@ -199,3 +201,82 @@ function my_theme_register_featured_menu() {
     );
 }
 add_action('after_setup_theme','my_theme_register_featured_menu');
+//注册小工具
+function my_theme_register_featured_sidebar() {
+    register_sidebar(
+        array(
+            'name'  => '精选区域小工具',
+            'id'  => 'featured-sidebar',
+            'description'  => '在首页精选推荐区域显示的小工具',
+            'before_widget'  => '<div id="%1$s" class="featured-widget %2$s">',
+            'after_widget'  => '</div>',
+            'before_title'  => '<h4 class="featured-widget-title">',
+            'after_title'  => '</h4>',
+        )
+    );
+}
+add_action('widgets_init','my_theme_register_featured_sidebar');
+//大综合-精选区域推荐
+function my_theme_render_featured_posts() {
+    ?>
+    <section class="featured-posts">
+        <h2>
+            <?php echo apply_filters('my_theme_featured_title','🔥 精选推荐') ?>
+        </h2>
+        <?php dynamic_sidebar('featured-sidebar') ?>
+        <?php
+        wp_nav_menu(array(
+            'theme_location' => 'featured-categories',
+            'container' => 'nav',
+            'menu_class' => 'featured-menu',
+            'depth' => 1,
+        )); 
+         ?>
+         <div class="featured-grid">
+            <?php 
+            $featured_query = new WP_Query(array(
+                'posts_per_page' => 3,
+                'post_status' => 'publish',
+                'orderby' => 'date',
+                'order' => 'DESC'
+            ));
+            if ($featured_query->have_posts()) :
+                while($featured_query->have_posts()) :
+                $featured_query->the_post(); ?>
+                    <article class="featured-item">
+                        <?php if (has_post_thumbnail()) : ?>
+                            <div class="featured-thumb">
+                                <?php 
+                                    the_post_thumbnail('medium')
+                                ?>
+                            </div>
+                            <?php endif; ?>
+                            <h3>
+                                <a href="<?php the_permalink();?>">
+                                    <?php the_title(); ?>
+                                </a>
+                            </h3>
+                            <p><?php echo wp_trim_words(get_the_excerpt(),20,'...');?></p>
+                    </article>
+                <?php endwhile;
+                wp_reset_postdata();
+                        endif;    
+                ?>    
+            <?php
+                    global $wpdb;
+                    $post_count   = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_status = 'publish' AND post_type = 'post'");
+                    $category_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->terms} t INNER JOIN {$wpdb->term_taxonomy} tt ON t.term_id = tt.term_id WHERE tt.taxonomy = 'category'");
+                    ?>
+                    <div class="featured-stats">
+                        <span>📄 文章总数：<?php echo esc_html($post_count); ?> 篇</span>
+                        <span>📂 分类总数：<?php echo esc_html($category_count); ?> 个</span>
+                    </div>
+         </div>
+    </section>
+    <?php 
+}
+add_action('my_theme_featured_posts','my_theme_render_featured_posts');
+function my_theme_custom_featured_title($title) {
+    return '⭐ ' . $title . ' ⭐';
+}
+add_filter('my_theme_featured_title', 'my_theme_custom_featured_title');
