@@ -280,3 +280,47 @@ function my_theme_custom_featured_title($title) {
     return '⭐ ' . $title . ' ⭐';
 }
 add_filter('my_theme_featured_title', 'my_theme_custom_featured_title');
+
+//cpt代码
+function my_first_theme_register_portfolio_cpt() {
+    $lables = array(
+        'name'          => '作品集',
+        'singular_name' => '作品',
+        'add_new'       => '新增作品',
+        'add_new_item'  => '新增作品',
+        'edit_item'     => '编辑作品',
+        'new_item'      => '新作品',
+        'view_item'     => '查看作品',
+        'search_items'  => '搜索作品',
+        'not_found'     => '没有找到作品',
+        'all_items'     => '所有作品',
+    );
+    $args = array(
+    'labels'       => $lables,
+    'public'       => true,
+    'has_archive'  => true,
+    'supports'     => array( 'title', 'editor', 'thumbnail' ),
+    'rewrite'      => array( 'slug' => 'portfolio' ),
+    'menu_icon'    => 'dashicons-portfolio',
+    'show_in_rest' => true,
+    );
+    register_post_type( 'portfolio', $args );
+}
+function my_first_theme_register_case_study_cpt() {
+    $lables = array(
+        'name' => '客户案例',
+        'singular_name' => '客户案例'
+    );
+    $args = array(
+        'labels' => $lables,
+        'has_archive' => true,
+        'public' => true,
+        'supports' => array('title','thumbnail','excerpt','editor'),
+        'menu_icon' => 'dashicons-businessman',
+        'show_in_rest' => true,
+        'rewrite'      => array( 'slug' => 'cases' ),
+    );
+    register_post_type('case-study',$args);
+}
+add_action('init','my_first_theme_register_case_study_cpt');
+add_action('init','my_first_theme_register_portfolio_cpt');
