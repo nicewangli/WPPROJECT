@@ -190,7 +190,7 @@ function my_first_theme_db_debug() {
     }
 	echo '</div>';
 }
-add_action('wp_footer','my_first_theme_db_debug');
+// add_action('wp_footer','my_first_theme_db_debug');
 //D7汇总，精选区域
 //注册精选分类导航
 function my_theme_register_featured_menu() {

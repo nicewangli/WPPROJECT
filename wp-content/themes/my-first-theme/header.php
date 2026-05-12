@@ -2,7 +2,7 @@
 <head>
     ...
     <!-- 自定义logo -->
-    <?php if ( has_custom_logo() ) : the_custom_logo(); endif; ?>
+    <!-- <?php if ( has_custom_logo() ) : the_custom_logo(); endif; ?> -->
     <!-- 自定义logo结束 -->
     <?php wp_head(); ?>
 </head>
