@@ -324,3 +324,58 @@ function my_first_theme_register_case_study_cpt() {
 }
 add_action('init','my_first_theme_register_case_study_cpt');
 add_action('init','my_first_theme_register_portfolio_cpt');
+
+//自定义taxonomy
+function my_first_theme_register_portfolio_type_taxonomy() {
+    //注册taxonomy
+    register_taxonomy('portfolio_type','portfolio',array(
+        'label' => '作品类型',
+        'singular_name'     => '作品类型',
+        'search_items'      => '搜索作品类型',
+        'all_items'         => '所有作品类型',
+        'parent_item'       => '父级作品类型',
+        'parent_item_colon' => '父级作品类型：',
+        'edit_item'         => '编辑作品类型',
+        'update_item'       => '更新作品类型',
+        'add_new_item'      => '添加新作品类型',
+        'new_item_name'     => '新作品类型名称',
+        'menu_name'         => '作品类型',
+        'rewrite' => array('slug' => 'portfolio-type'),
+        'hierarchical' => true,
+        'show_in_rest' => true,
+        'show_admin_column' => true,
+    ));
+}
+add_action('init','my_first_theme_register_portfolio_type_taxonomy');
+
+//非层级分类法
+function my_first_theme_register_portfolio_tag_taxonomy() {
+    $labels = array(
+        'name'                       => '技术标签',
+        'singular_name'              => '技术标签',
+        'search_items'               => '搜索技术标签',
+        'popular_items'              => '热门技术标签',
+        'all_items'                  => '所有技术标签',
+        'edit_item'                  => '编辑技术标签',
+        'update_item'                => '更新技术标签',
+        'add_new_item'               => '添加新技术标签',
+        'new_item_name'              => '新技术标签名称',
+        'separate_items_with_commas' => '用逗号分隔多个标签',
+        'add_or_remove_items'        => '添加或删除技术标签',
+        'choose_from_most_used'      => '从常用标签中选择',
+        'menu_name'                  => '技术标签',
+    );
+
+    register_taxonomy(
+        'portfolio_tag',
+        'portfolio',
+        array(
+            'labels'       => $labels,
+            'rewrite'      => array( 'slug' => 'portfolio-tag' ),
+            'hierarchical' => false,
+            'show_in_rest' => true,
+            'show_admin_column' => true,
+        )
+    );
+}
+add_action('init','my_first_theme_register_portfolio_tag_taxonomy');
