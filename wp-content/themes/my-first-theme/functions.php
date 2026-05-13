@@ -286,8 +286,8 @@ function my_first_theme_register_portfolio_cpt() {
     $lables = array(
         'name'          => '作品集',
         'singular_name' => '作品',
-        'add_new'       => '新增作品',
-        'add_new_item'  => '新增作品',
+        'add_new'       => '新增刚刚作品',
+        'add_new_item'  => '新增很好作品',
         'edit_item'     => '编辑作品',
         'new_item'      => '新作品',
         'view_item'     => '查看作品',
@@ -306,6 +306,7 @@ function my_first_theme_register_portfolio_cpt() {
     );
     register_post_type( 'portfolio', $args );
 }
+
 function my_first_theme_register_case_study_cpt() {
     $lables = array(
         'name' => '客户案例',
