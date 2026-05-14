@@ -13,10 +13,24 @@
 !.gitignore
 
 ########################################
-# Allow wp-content (themes/plugins/mu-plugins)
+# Allow themes (你的主题代码)
 ########################################
 !wp-content/
-!wp-content/**
+!wp-content/themes/
+!wp-content/themes/**
+
+########################################
+# Allow plugins directory but NOT third-party plugin contents
+# 如果你以后写自己的插件，取消注释下面两行
+########################################
+!wp-content/plugins/
+!wp-content/mu-plugins/
+wp-content/plugins/*/
+wp-content/mu-plugins/*/
+
+# 如果你有自己的插件要跟踪，取消注释并改成你的插件名
+# !wp-content/plugins/你的插件名/
+# !wp-content/plugins/你的插件名/**
 
 ########################################
 # Runtime / generated content inside wp-content

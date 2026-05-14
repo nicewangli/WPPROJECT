@@ -465,3 +465,17 @@ function my_first_theme_save_featured($post_id) {
 }
 add_action('save_post', 'my_first_theme_save_featured');
 add_action('add_meta_boxes', 'my_first_theme_add_featured_meta_box');
+
+//注册选项页
+function my_first_theme_add_options_page() {
+    if (function_exists('acf_add_options_page')) {
+        acf_add_options_page( array(
+            'page_title' => '网站全局设置',
+            'menu_title' => '网站设置',
+            'menu_slug' => 'site-settings',
+            'capability' => 'edit_posts',
+            'redirect' => 'false',
+        ));
+    }
+}
+add_action('acf/init','my_first_theme_add_options_page');
