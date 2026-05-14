@@ -4,6 +4,12 @@
     echo esc_html('文章作者：' . get_the_author());
 endif; ?>
     <h1><?php the_title(); ?></h1>
+    <?php 
+    $subtitle = get_post_meta(get_the_ID(),'subtitle',true);
+    if (!empty($subtitle)) {
+        echo '<p class="article-subtitle">' . esc_html($subtitle).'</p>';
+    }
+    ?>
     <div class="portfolio-taxonomies">
         <?php
         $portfolio_types = get_the_term_list(

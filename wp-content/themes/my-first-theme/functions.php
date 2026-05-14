@@ -8,6 +8,9 @@ function my_first_modify_main_query( $query ) {
 	if ( ! is_admin() && $query->is_main_query() ) {
 		if ( is_home() ) {
 			$query->set( 'posts_per_page', 5 );
+            $query->set('meta_key', 'is_featured');
+            $query->set('meta_value', '1');
+            $query->set('meta_compare', '=');
 		} elseif ( is_category() ) {
 			$query->set( 'posts_per_page', 3 );
 		}
@@ -380,3 +383,85 @@ function my_first_theme_register_portfolio_tag_taxonomy() {
     );
 }
 add_action('init','my_first_theme_register_portfolio_tag_taxonomy');
+//注册副标题 meta box
+function my_first_theme_add_subtitle_meta_bax() {
+    add_meta_box(
+        'subtitle_meta_box',    //html id属性
+        '副标题',       //标题
+        'my_first_theme_subtitle_callback', // 回调函数
+        array('post','page'),
+        'normal',    //位置
+        'high'  //优先级
+    
+    );
+}
+//手写页面
+function my_first_theme_subtitle_callback($post) {
+    $subtitle = get_post_meta($post->ID,'subtitle',true);
+    ?>
+    <label for="subtitle_field">副标题：</label>
+    <input type="text" id="subtitle_field" name="subtitle_field"
+        value="<?php echo esc_attr($subtitle);?>"
+        style="width:100%; padding:6px;"
+    >
+    <?php
+}
+add_action('add_meta_boxes','my_first_theme_add_subtitle_meta_bax');
+
+//保存副标题
+function my_first_theme_save_subtitle($post_id) {
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+    if (!isset($_POST['subtitle_field'])) {
+        return;
+    }
+    $subtitle = sanitize_text_field($_POST['subtitle_field']);
+    update_post_meta($post_id,'subtitle',$subtitle);
+}
+add_action('save_post','my_first_theme_save_subtitle');
+
+// ===== 特色文章标记 =====
+
+// 注册 Meta Box
+function my_first_theme_add_featured_meta_box() {
+    add_meta_box(
+        'featured_meta_box',
+        '特色文章',
+        'my_first_theme_featured_callback',
+        'post',
+        'side',
+        'default'
+    );
+}
+//回调：显示复选框
+function my_first_theme_featured_callback($post) {
+    $featured = get_post_meta($post->ID,'is_featured',true);
+    wp_nonce_field('my_first_theme_featured_action', 'featured_nonce');
+    ?>
+    <label for="is_featured">
+        <input
+        type="checkbox"
+        id="is_featured"
+        name="is_featured"
+        value="1"
+        <?php checked($featured,'1') ?>
+        >
+        标记为特色文章
+    </label>
+    <?php
+}
+
+//保存复选框数据
+function my_first_theme_save_featured($post_id) {
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+    if (!isset($_POST['featured_nonce']) || !wp_verify_nonce($_POST['featured_nonce'], 'my_first_theme_featured_action')) {
+        return;
+    }
+    $is_featured = isset($_POST['is_featured']) ? '1' : '0';
+    update_post_meta($post_id,'is_featured',$is_featured);
+}
+add_action('save_post', 'my_first_theme_save_featured');
+add_action('add_meta_boxes', 'my_first_theme_add_featured_meta_box');

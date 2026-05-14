@@ -1,6 +1,12 @@
-<article>
+<article class="<?php echo (get_post_meta(get_the_ID(), 'is_featured', true) === '1') ? 'featured-post' : ''; ?>">
 
     <h2>
+        <?php
+            $subtitle = get_post_meta(get_the_ID(),'subtitle',true);
+            if (!empty($subtitle)) {
+                echo '<p class="article-subtitle">'.esc_html($subtitle).'</p>';
+            }
+        ?>
         <a href="<?php the_permalink(); ?>">
             <?php the_title(); ?>
         </a>

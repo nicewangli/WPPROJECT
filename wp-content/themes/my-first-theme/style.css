@@ -54,3 +54,8 @@ body {
     color: #ffffff;
     font-weight: 600;
   }
+  .featured-post {
+    border-left: 4px solid #e74c3c;
+    background: #fff8f8;
+    padding: 15px;
+}
