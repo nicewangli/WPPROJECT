@@ -479,3 +479,308 @@ function my_first_theme_add_options_page() {
     }
 }
 add_action('acf/init','my_first_theme_add_options_page');
+
+//第二周总结实战
+//注册团队成员cpt 关键函数 register_post_type('cpt名称',参数数组),在init钩子时候触发
+function my_first_theme_register_team_cpt() {
+    $labels = array(
+        'name' => '团队成员',
+        'singular_name' => '团队成员',
+        'add_new'       => '添加成员',
+        'add_new_item'  => '添加新成员',
+        'edit_item'     => '编辑成员',
+        'all_items'     => '所有成员',
+        'search_items'  => '搜索成员',
+        'not_found'     => '没有找到成员',
+    );
+    $args = array(
+        'labels' => $labels,
+        'public' => true,
+        'has_archive' => true,
+        'supports' => array('title','editor','thumbnail'),
+        'rewrite' => array('slug'=>'team'),
+        'menu_icon' => 'dashicons-groups',
+        'show_in_rest' => true,
+    );
+    register_post_type('team-member',$args);
+}
+add_action('init','my_first_theme_register_team_cpt');
+//注册部门分类法（层级）+技能标签分类法（非层级） 关键函数 register_taxonomy('标签名','挂载的cpt',参数)
+function my_first_theme_register_team_department_taxonomy() {
+    $labels = array(
+        'name'              => '部门',
+        'singular_name'     => '部门',
+        'search_items'      => '搜索部门',
+        'all_items'         => '所有部门',
+        'parent_item'       => '上级部门',
+        'parent_item_colon' => '上级部门：',
+        'edit_item'         => '编辑部门',
+        'update_item'       => '更新部门',
+        'add_new_item'      => '添加新部门',
+        'new_item_name'     => '新部门名称',
+        'menu_name'         => '部门',
+    );
+    register_taxonomy('department','team-member',array(
+        'labels'            => $labels,
+            'hierarchical'      => true,
+            'rewrite'           => array( 'slug' => 'department' ),
+            'show_in_rest'      => true,
+            'show_admin_column' => true,
+    ));
+}
+add_action( 'init', 'my_first_theme_register_team_department_taxonomy' );
+
+function my_first_theme_register_team_skill_taxonomy() {
+    $labels = array(
+        'name'                       => '技能标签',
+        'singular_name'              => '技能标签',
+        'search_items'               => '搜索技能',
+        'popular_items'              => '热门技能',
+        'all_items'                  => '所有技能',
+        'edit_item'                  => '编辑技能',
+        'update_item'                => '更新技能',
+        'add_new_item'               => '添加新技能',
+        'new_item_name'              => '新技能名称',
+        'separate_items_with_commas' => '用逗号分隔多个技能',
+        'add_or_remove_items'        => '添加或删除技能',
+        'choose_from_most_used'      => '从常用技能中选择',
+        'menu_name'                  => '技能标签',
+    );
+
+    register_taxonomy(
+        'skill',
+        'team-member',
+        array(
+            'labels'            => $labels,
+            'hierarchical'      => false,
+            'rewrite'           => array( 'slug' => 'skill' ),
+            'show_in_rest'      => true,
+            'show_admin_column' => true,
+        )
+    );
+}
+add_action( 'init', 'my_first_theme_register_team_skill_taxonomy' );
+
+//注册meta_box  （职位+邮箱） 主要函数 add_meta_box('html的id',title) 钩子是专用钩子 add_meta_boxes
+function my_first_theme_add_team_meta_box() {
+    add_meta_box('team_member_info','成员信息','my_first_theme_team_meta_callback','team-member','normal','high');
+}
+add_action('add_meta_boxes','my_first_theme_add_team_meta_box');
+
+function my_first_theme_team_meta_callback($post) {
+    $position = get_post_meta($post->ID,'team_position',true);
+    $email = get_post_meta($post->ID,'team_email',true);
+    wp_nonce_field( 'team_meta_action', 'team_meta_nonce' );
+    ?>
+    <p>
+        <label for="team_position">职位：</label>
+        <input type="text" id="team_position" name="team_position"
+               value="<?php echo esc_attr( $position ); ?>"
+               style="width: 100%; padding: 6px;">
+    </p>
+    <p>
+        <label for="team_email">邮箱：</label>
+        <input type="email" id="team_email" name="team_email"
+               value="<?php echo esc_attr( $email ); ?>"
+               style="width: 100%; padding: 6px;">
+    </p>
+    <?php
+}
+function my_first_theme_save_team_meta( $post_id ) {
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+        return;
+    }
+    if ( ! isset( $_POST['team_meta_nonce'] ) ||
+         ! wp_verify_nonce( $_POST['team_meta_nonce'], 'team_meta_action' ) ) {
+        return;
+    }
+    if ( isset( $_POST['team_position'] ) ) {
+        update_post_meta( $post_id, 'team_position',
+            sanitize_text_field( $_POST['team_position'] ) );
+    }
+    if ( isset( $_POST['team_email'] ) ) {
+        update_post_meta( $post_id, 'team_email',
+            sanitize_email( $_POST['team_email'] ) );
+    }
+}
+add_action( 'save_post', 'my_first_theme_save_team_meta' );
+
+function my_first_theme_greeting_shortcode( $atts ) {
+    $defaults = array(
+        'name' => '访客',
+    );
+    $atts = shortcode_atts( $defaults, $atts, 'greeting' );
+
+    $name = esc_html( $atts['name'] );
+
+    return '<p class="greeting-message">你好，' . $name . '，欢迎来到我的网站！</p>';
+}
+add_shortcode( 'greeting', 'my_first_theme_greeting_shortcode' );
+
+function my_first_theme_highlight_shortcode($atts,$content=null) {
+    $defaults = array(
+        'color' => '#fffde7',
+    );
+    $atts = shortcode_atts($defaults,$atts,'highlight');
+    $color = esc_attr($atts['color']);
+    return '<span class="highlight-text" style="background-color:' . $color . '; padding:2px 6px; border-radius:3px;">'
+           . do_shortcode( $content )
+           . '</span>';
+}
+add_shortcode( 'highlight', 'my_first_theme_highlight_shortcode' );
+function my_first_theme_recent_posts_shortcode( $atts ) {
+    $defaults = array(
+        'count' => 5,
+        'show_thumbnail' => 'yes',
+        'show_excerpt' => 'no',
+        'category' => '',
+    );
+    $atts = shortcode_atts( $defaults, $atts, 'recent_posts' );
+
+    $count = absint( $atts['count'] );
+    if ( $count < 1 ) {
+        $count = 1;
+    }
+    $query_args = array(
+        'posts_per_page' => $count,
+        'post_status'    => 'publish',
+        'orderby'        => 'date',
+        'order'          => 'DESC',
+    );
+    if (!empty($atts['category'])) {
+        $categories = wp_parse_list($atts['category']);
+        $query_args['category_name'] = implode(',',$categories);
+    }
+    $query = new WP_Query( $query_args );
+
+    if ( ! $query->have_posts() ) {
+        return '<p>暂无文章</p>';
+    }
+
+    $output = '<ul class="recent-posts-list">';
+
+    while ( $query->have_posts() ) {
+        $query->the_post();
+        $output .= '<li>';
+
+        if ( $atts['show_thumbnail'] === 'yes' && has_post_thumbnail() ) {
+            $output .= '<div class="recent-thumb">';
+            $output .= get_the_post_thumbnail( get_the_ID(), 'thumbnail' );
+            $output .= '</div>';
+        }
+
+        $output .= sprintf(
+            '<a href="%s">%s</a>',
+            esc_url( get_permalink() ),
+            esc_html( get_the_title() )
+        );
+
+        if ( $atts['show_excerpt'] === 'yes' ) {
+            $output .= '<p class="recent-excerpt">' . esc_html( wp_trim_words( get_the_excerpt(), 20, '...' ) ) . '</p>';
+        }
+
+        $output .= '</li>';
+        
+    }
+
+    $output .= '</ul>';
+
+    wp_reset_postdata();
+
+    return $output;
+}
+add_shortcode( 'recent_posts', 'my_first_theme_recent_posts_shortcode' );
+
+function fei_man_test($atts,$content=null) {
+    $defaults = array(
+        'author' => '佚名',
+    );
+    $atts = shortcode_atts($defaults,$atts,'quote');
+    $author = esc_html($atts['author']);
+    return '<blockquote class="custom-quote"><p>'.do_shortcode( $content ).'</p>
+    <footer>——'.$author.'</footer></blockquote>';
+}
+add_shortcode('quote','fei_man_test');
+
+function my_first_theme_team_members_shortcode($atts) {
+    $defaults = array(
+        'count' => -1,
+        'department' => '',
+        'orderby' => 'date',
+        'show_position' => 'yes',
+    );
+    $atts = shortcode_atts($defaults,$atts,'team_members');
+    if (!in_array($atts['orderby'],array('date','title','rand'))) {
+        $atts['orderby'] = 'date';
+    }
+    $count = intval($atts['count']);
+    $query_args = array(
+        'post_type'      => 'team-member',
+        'posts_per_page' => $count,
+        'post_status'    => 'publish',
+        'orderby'        => $atts['orderby'],
+        'order'          => 'DESC',
+    );
+
+    if ( ! empty( $atts['department'] ) ) {
+        $departments = wp_parse_list( $atts['department'] );
+        $query_args['tax_query'] = array(
+            array(
+                'taxonomy' => 'department',
+                'field'    => 'slug',
+                'terms'    => $departments,
+            ),
+        );
+    }
+    $team_query = new WP_Query( $query_args );
+
+    if ( ! $team_query->have_posts() ) {
+        return '<p>暂无团队成员</p>';
+    }
+
+    $output = '<div class="team-members-grid">';
+
+    while ( $team_query->have_posts() ) {
+        $team_query->the_post();
+
+        $position = get_post_meta( get_the_ID(), 'team_position', true );
+        $email    = get_post_meta( get_the_ID(), 'team_email', true );
+
+        $output .= '<div class="team-member-card">';
+
+        if ( has_post_thumbnail() ) {
+            $output .= '<div class="team-member-photo">';
+            $output .= get_the_post_thumbnail( get_the_ID(), 'medium' );
+            $output .= '</div>';
+        }
+
+        $output .= sprintf(
+            '<h3 class="team-member-name">%s</h3>',
+            esc_html( get_the_title() )
+        );
+
+        if ( $atts['show_position'] === 'yes' && ! empty( $position ) ) {
+            $output .= sprintf(
+                '<p class="team-member-position">%s</p>',
+                esc_html( $position )
+            );
+        }
+
+        if ( ! empty( $email ) ) {
+            $output .= sprintf(
+                '<p class="team-member-email"><a href="mailto:%s">%s</a></p>',
+                esc_url( 'mailto:' . $email ),
+                esc_html( $email )
+            );
+        }
+
+        $output .= '</div>';
+    }
+
+    $output .= '</div>';
+
+    wp_reset_postdata();
+
+    return $output;
+}
+add_shortcode( 'team_members', 'my_first_theme_team_members_shortcode' );
