@@ -784,3 +784,31 @@ function my_first_theme_team_members_shortcode($atts) {
     return $output;
 }
 add_shortcode( 'team_members', 'my_first_theme_team_members_shortcode' );
+/**
+ * D21 调试练习：故意写一个 bug
+ */
+function d21_broken_shortcode($atts) {
+
+    $posts = new WP_Query(array(
+        'post_type'      => 'post',
+        'posts_per_page' => 3,
+    ));
+
+    $output = '<ul class="d21-debug-list">';
+
+    while ($posts->have_posts()) {
+        $posts->the_post();
+        $output .= '<li>';
+        $output .= '<a href="' . get_permalink() . '">';
+        $output .= get_the_title();  // 忘记转义（故意）
+        $output .= '</a>';
+        $output .= '</li>';
+    }
+
+    wp_reset_postdata();
+
+    $output .= '</ul>';
+
+    return $output;
+}
+add_shortcode('d21_debug_test', 'd21_broken_shortcode');
