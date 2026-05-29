@@ -7,13 +7,17 @@
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
-
+<?php do_action('corporate_before_header'); ?>
 <header class="site-header">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="<?php echo esc_url(home_url('/')); ?>">
-                <?php bloginfo('name'); ?>
-            </a>
+            <?php if (has_custom_logo()) : ?>
+            <?php the_custom_logo(); ?>
+            <?php else : ?>
+                <a class="navbar-brand" href="<?php echo esc_url(home_url('/')); ?>">
+                    <?php bloginfo('name'); ?>
+                </a>
+            <?php endif; ?>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#primary-nav">
                 <span class="navbar-toggler-icon"></span>
@@ -33,5 +37,6 @@
         </div>
     </nav>
 </header>
-
+<?php do_action('corporate_after_header'); ?>
 <main id="content" class="site-content">
+<?php do_action('corporate_before_content'); ?>

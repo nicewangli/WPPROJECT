@@ -7,3 +7,22 @@
 
 /* CSS 变量已在 style.css 定义，此处用于覆盖 Bootstrap 默认样式 */
 /* D23 开始逐步填充 */
+.site-header .navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.site-content {
+    min-height: 60vh;
+}
+.site-footer a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.site-footer a:hover {
+    color: var(--primary, #1a56db);
+}
+
+.site-footer .list-unstyled li {
+    margin-bottom: 0.5rem;
+}

@@ -7,3 +7,11 @@ Author: Jackson
 Author URI: https://example.com
 Text Domain: corporate-theme
 */
+:root {
+    --primary: #1a56db;
+    --primary-dark: #1e40af;
+    --white: #ffffff;
+    --gray-light: #f8f9fa;
+    --gray-dark: #212529;
+    --font-base: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
