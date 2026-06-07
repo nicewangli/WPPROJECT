@@ -114,3 +114,21 @@ function corporate_register_sidebars()
     ]);
 }
 add_action('widgets_init', 'corporate_register_sidebars');
+
+/**
+ * 注册acf选项页 -- hero 区动态字段
+ * 
+ */
+function corporate_acf_options_page()
+{
+    if (function_exists('acf_add_options_page')) {
+        acf_add_options_page([
+            'page_title' => __('主题设置','corporate-theme'),
+            'menu_title' => __('主题设置','corporate-theme'),
+            'menu_slug' => 'theme-settings',
+            'capability' => 'edit_theme_options',
+            'redirect' => false,
+        ]);
+    }
+}
+add_action('acf/init','corporate_acf_options_page');

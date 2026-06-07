@@ -8,17 +8,46 @@ get_header();
         <div class="row">
             <div class="col-lg-8 mx-auto text-center">
                 <h1 class="display-4 fw-bold mb-3">
-                    <?php esc_html_e('用技术驱动企业增长', 'corporate-theme'); ?>
+                    <?php
+                    $hero_title = get_field('hero_title', 'option');
+                    if ($hero_title) {
+                        echo esc_html($hero_title);
+                    } else {
+                        esc_html_e('用技术驱动企业增长', 'corporate-theme');
+                    }
+                    ?>
                 </h1>
                 <p class="lead mb-4">
-                    <?php esc_html_e('我们为企业提供专业的网站开发、移动应用和数字化解决方案，助力业务转型升级。', 'corporate-theme'); ?>
+                    <?php
+                    $hero_subtitle = get_field('hero_subtitle', 'option');
+                    if ($hero_subtitle) {
+                        echo esc_html($hero_subtitle);
+                    } else {
+                        esc_html_e('我们为企业提供专业的网站开发、移动应用和数字化解决方案，助力业务转型升级。', 'corporate-theme');
+                    }
+                    ?>
                 </p>
                 <div class="d-flex gap-3 justify-content-center">
-                    <a href="<?php echo esc_url(home_url('/contact/')); ?>" class="btn btn-light btn-lg">
-                        <?php esc_html_e('联系我们', 'corporate-theme'); ?>
+                    <?php
+                    // 主按钮
+                    $cta_link = get_field('hero_cta_link', 'option');
+                    $cta_text = get_field('hero_cta_text', 'option');
+                    $cta_url  = $cta_link ? esc_url($cta_link['url']) : esc_url(home_url('/contact/'));
+                    $cta_label = $cta_text ? esc_html($cta_text) : esc_html__('联系我们', 'corporate-theme');
+                    ?>
+                    <a href="<?php echo $cta_url; ?>" class="btn btn-light btn-lg">
+                        <?php echo $cta_label; ?>
                     </a>
-                    <a href="<?php echo esc_url(home_url('/portfolio/')); ?>" class="btn btn-outline-light btn-lg">
-                        <?php esc_html_e('查看案例', 'corporate-theme'); ?>
+
+                    <?php
+                    // 副按钮
+                    $cta2_link = get_field('hero_cta2_link', 'option');
+                    $cta2_text = get_field('hero_cta2_text', 'option');
+                    $cta2_url  = $cta2_link ? esc_url($cta2_link['url']) : esc_url(home_url('/portfolio/'));
+                    $cta2_label = $cta2_text ? esc_html($cta2_text) : esc_html__('查看案例', 'corporate-theme');
+                    ?>
+                    <a href="<?php echo $cta2_url; ?>" class="btn btn-outline-light btn-lg">
+                        <?php echo $cta2_label; ?>
                     </a>
                 </div>
             </div>
