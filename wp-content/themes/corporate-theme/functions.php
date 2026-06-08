@@ -132,3 +132,154 @@ function corporate_acf_options_page()
     }
 }
 add_action('acf/init','corporate_acf_options_page');
+
+/**
+ * 注册作品集 cpt
+ */
+function corporate_register_portfolio_cpt()
+{
+    $labels = [
+        'name'               => _x('作品集结', 'post type general name', 'corporate-theme'),
+        'singular_name'      => _x('作品', 'post type singular name', 'corporate-theme'),
+        'add_new'            => __('添加作品', 'corporate-theme'),
+        'add_new_item'       => __('添加新作品', 'corporate-theme'),
+        'edit_item'          => __('编辑作品', 'corporate-theme'),
+        'view_item'          => __('查看作品', 'corporate-theme'),
+        'search_items'       => __('搜索作品', 'corporate-theme'),
+        'not_found'          => __('没有找到作品', 'corporate-theme'),
+        'not_found_in_trash' => __('回收站中没有作品', 'corporate-theme'),
+        'all_items'          => __('全部作品', 'corporate-theme'),
+    ];
+        $args = [
+        'labels'       => $labels,
+        'public'       => true,
+        'has_archive'  => true,
+        'rewrite'      => ['slug' => 'portfolio'],
+        'supports'     => ['title', 'editor', 'thumbnail', 'excerpt'],
+        'menu_icon'    => 'dashicons-portfolio',
+        'show_in_rest' => true,
+    ];
+
+    register_post_type('portfolio', $args);
+}
+add_action('init', 'corporate_register_portfolio_cpt');
+
+/**
+ * 注册作品集分类法和标签
+ */
+function corporate_register_porfolio_taxonomies()
+{
+    //层级分类法：作品类型（portfolio_type）
+    $type_labels = [
+        'name'              => _x('作品类型', 'taxonomy general name', 'corporate-theme'),
+        'singular_name'     => _x('作品类型', 'taxonomy singular name', 'corporate-theme'),
+        'search_items'      => __('搜索作品类型', 'corporate-theme'),
+        'all_items'         => __('全部作品类型', 'corporate-theme'),
+        'parent_item'       => __('父级类型', 'corporate-theme'),
+        'parent_item_colon' => __('父级类型：', 'corporate-theme'),
+        'edit_item'         => __('编辑作品类型', 'corporate-theme'),
+        'update_item'       => __('更新作品类型', 'corporate-theme'),
+        'add_new_item'      => __('添加新作品类型', 'corporate-theme'),
+        'new_item_name'     => __('新作品类型名称', 'corporate-theme'),
+    ];
+    register_taxonomy('portfolio_type', 'portfolio', [
+        'labels'       => $type_labels,
+        'hierarchical' => true,       // 🔴 true = 像分类目录，有父子层级
+        'rewrite'      => ['slug' => 'portfolio-type'],
+        'show_in_rest' => true,
+    ]);
+    // 非层级标签：作品标签（portfolio_tag）
+    $tag_labels = [
+        'name'              => _x('作品标签', 'taxonomy general name', 'corporate-theme'),
+        'singular_name'     => _x('作品标签', 'taxonomy singular name', 'corporate-theme'),
+        'search_items'      => __('搜索作品标签', 'corporate-theme'),
+        'all_items'         => __('全部作品标签', 'corporate-theme'),
+        'edit_item'         => __('编辑作品标签', 'corporate-theme'),
+        'update_item'       => __('更新作品标签', 'corporate-theme'),
+        'add_new_item'      => __('添加新作品标签', 'corporate-theme'),
+        'new_item_name'     => __('新作品标签名称', 'corporat-theme'),
+    ];
+
+    register_taxonomy('portfolio_tag', 'portfolio', [
+        'labels'       => $tag_labels,
+        'hierarchical' => false,      // 🔴 false = 像标签，扁平的，没有父子关系
+        'rewrite'      => ['slug' => 'portfolio-tag'],
+        'show_in_rest' => true,
+    ]);
+}
+add_action('init', 'corporate_register_porfolio_taxonomies');
+/**
+ * 计算文章阅读时间并显示
+ * 
+ * 挂载 the_content 过滤器上，在正文前输出
+ * @param string $content 文章原始内容
+ * @return string 追加阅读时间后的完整内容
+ */
+function corporate_reading_time($content) 
+{
+    //只在单篇文章页显示
+    if (!is_single()) {
+        return $content;
+    }
+
+    //获取当前文章内容，并去除html标签
+    $plain_text = strip_tags($content);
+
+    //用mb_strlen计算中文字数
+    $word_count = mb_strlen($plain_text,'UTF-8');
+    //中文阅读速度约 400字/分钟
+    $minutes = ceil($word_count/400);
+    //最少阅读1分钟
+    if($minutes<1) {
+        $minutes = 1;
+    }
+    // 构建阅读时间 HTML（放在正文前面）
+    $reading_time_html = sprintf(
+        '<div class="reading-time alert alert-info py-2 mb-4">
+            <i class="bi bi-clock"></i>
+            %s
+        </div>',
+        sprintf(
+            /* translators: %d: 阅读分钟数 */
+            esc_html__('阅读时间约 %d 分钟', 'corporate-theme'),
+            $minutes
+        )
+    );
+
+    // 把阅读时间拼接到正文前面
+    return $reading_time_html . $content;
+}
+add_filter('the_content', 'corporate_reading_time', 10);
+
+/**
+ * 在文章末尾追加版权声明
+ * 挂载the_content过滤器上，在正文后输出
+ * @param string $content 
+ * @return string
+ */
+function corporate_copyright_notice($content) 
+{
+    //只在单篇文章页显示
+    if (!is_single()) {
+        return $content;
+    }
+    $copyright_html = sprintf(
+        '<div class="copyright-notice alert alert-warning mt-4 p-3">
+            <i class="bi bi-c-circle"></i>
+            <strong>%s</strong>
+            <p class="mb-0 mt-1">
+                %s
+            </p>
+        </div>',
+        esc_html__('版权声明', 'corporate-theme'),
+        sprintf(
+            /* translators: 1: 站点名称, 2: 文章标题链接 */
+            esc_html__('本文《%1$s》由 %2$s 发布，未经许可禁止转载。', 'corporate-theme'),
+            esc_html(get_the_title()),
+            '<a href="' . esc_url(get_permalink()) . '">' . esc_html(get_bloginfo('name')) . '</a>'
+        )
+    );
+
+    return $content . $copyright_html;
+}
+add_filter('the_content', 'corporate_copyright_notice', 10);
