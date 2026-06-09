@@ -283,3 +283,219 @@ function corporate_copyright_notice($content)
     return $content . $copyright_html;
 }
 add_filter('the_content', 'corporate_copyright_notice', 10);
+
+/**
+ * [cta] 短代码 —— 行动号召按钮
+ * 
+ * @param array $atts 用户传入的属性 
+ * @param string $content 包裹内容 （[cta]内容[/cta]）
+ * @return string 生成的html
+ */
+function corporate_cta_shortcode($atts,$content = null)
+{
+    // 合并默认属性
+    $atts = shortcode_atts(
+        [
+            'title' => '点击咨询',
+            'url'   => '#',
+            'bg'    => '#0073aa',
+            'color' => '#ffffff',
+        ],
+        $atts,
+        'cta'
+    );
+
+    // 对每个输出进行安全转义
+    // $safe_title = esc_html($atts['title']);
+    $safe_url   = esc_url($atts['url']);
+    $safe_bg    = esc_attr($atts['bg']);
+    $safe_color = esc_attr($atts['color']);
+    // 处理包裹内容：如果用户写了 [cta]内容[/cta]，优先用 $content
+    if (!empty(trim($content))) {
+        // 先从实体解码，再允许安全HTML标签
+        $safe_title = wp_kses_post(html_entity_decode(trim($content)));
+    } else {
+        $safe_title = esc_html($atts['title']);
+    }
+    // 构建 HTML（用 sprintf 拼接）
+    $html = sprintf(
+        '<div class="cta-wrapper text-center my-4 p-4" style="background-color:%s;border-radius:8px;">
+            <a href="%s" class="btn btn-light btn-lg fw-bold" style="color:%s;">
+                %s
+            </a>
+        </div>',
+        $safe_bg,
+        $safe_url,
+        $safe_color,
+        $safe_title
+    );
+
+    return $html;
+}
+add_shortcode('cta','corporate_cta_shortcode');
+
+/**
+ * 自定义小工具：公司联系信息
+ */
+class Corporate_Contact_Widget extends WP_Widget
+{
+    /**
+     * 1. 构造函数：注册小工具基本信息
+     */
+    public function __construct()
+    {
+        // 先空着，下一步填写
+        parent::__construct(
+            'corporate_contact_widget',          // $id_base — 小工具的唯一 ID
+            __('公司联系信息', 'corporate-theme'), // $name   — 后台显示的名称
+            [
+                'description' => __('显示公司电话、邮箱、地址等联系信息', 'corporate-theme'),
+            ]
+        );
+    }
+
+    /**
+     * 2. 前台输出：在网页上渲染 HTML
+     *
+     * @param array $args     register_sidebar() 定义的包裹 HTML
+     * @param array $instance 后台保存的数据
+     */
+    public function widget($args, $instance)
+    {
+        // 提取包裹 HTML（来自 register_sidebar() 的定义）
+        echo $args['before_widget'];
+        // 输出标题（如果有的话）
+        if (!empty($instance['title'])) {
+            echo $args['before_title'] . esc_html($instance['title']) . $args['after_title'];
+        }
+        // 开始输出联系信息内容
+        echo '<div class="contact-widget-content">';
+        // 公司名称
+        if (!empty($instance['company'])) {
+            echo '<p class="contact-company fw-bold mb-2">' . esc_html($instance['company']) . '</p>';
+        }
+        // 电话
+        if (!empty($instance['phone'])) {
+            echo '<p class="contact-phone mb-1"><i class="bi bi-telephone"></i> '
+                . esc_html($instance['phone']) . '</p>';
+        }
+
+        // 邮箱
+        if (!empty($instance['email'])) {
+            echo '<p class="contact-email mb-1"><i class="bi bi-envelope"></i> '
+                . esc_html($instance['email']) . '</p>';
+        }
+
+        // 地址
+        if (!empty($instance['address'])) {
+            echo '<p class="contact-address mb-0"><i class="bi bi-geo-alt"></i> '
+                . esc_html($instance['address']) . '</p>';
+        }
+
+        echo '</div>';
+
+        // 闭合包裹 HTML
+        echo $args['after_widget'];
+    }
+
+    /**
+     * 3. 后台表单：管理员看到的设置界面
+     *
+     * @param array $instance 当前保存的数据
+     */
+    public function form($instance)
+    {
+        // 先空着，下一步填写
+        // 从 $instance 提取当前保存的值，没有则用默认值
+        $title   = !empty($instance['title'])   ? $instance['title']   : __('联系我们', 'corporate-theme');
+        $company = !empty($instance['company']) ? $instance['company'] : '';
+        $phone   = !empty($instance['phone'])   ? $instance['phone']   : '';
+        $email   = !empty($instance['email'])   ? $instance['email']   : '';
+        $address = !empty($instance['address']) ? $instance['address'] : '';
+        ?>
+
+        <p>
+            <label for="<?php echo $this->get_field_id('title'); ?>">
+                <?php esc_html_e('标题：', 'corporate-theme'); ?>
+            </label>
+            <input type="text"
+                   id="<?php echo $this->get_field_id('title'); ?>"
+                   name="<?php echo $this->get_field_name('title'); ?>"
+                   value="<?php echo esc_attr($title); ?>"
+                   class="widefat">
+        </p>
+
+        <p>
+            <label for="<?php echo $this->get_field_id('company'); ?>">
+                <?php esc_html_e('公司名称：', 'corporate-theme'); ?>
+            </label>
+            <input type="text"
+                   id="<?php echo $this->get_field_id('company'); ?>"
+                   name="<?php echo $this->get_field_name('company'); ?>"
+                   value="<?php echo esc_attr($company); ?>"
+                   class="widefat">
+        </p>
+
+        <p>
+            <label for="<?php echo $this->get_field_id('phone'); ?>">
+                <?php esc_html_e('电话：', 'corporate-theme'); ?>
+            </label>
+            <input type="text"
+                   id="<?php echo $this->get_field_id('phone'); ?>"
+                   name="<?php echo $this->get_field_name('phone'); ?>"
+                   value="<?php echo esc_attr($phone); ?>"
+                   class="widefat">
+        </p>
+
+        <p>
+            <label for="<?php echo $this->get_field_id('email'); ?>">
+                <?php esc_html_e('邮箱：', 'corporate-theme'); ?>
+            </label>
+            <input type="text"
+                   id="<?php echo $this->get_field_id('email'); ?>"
+                   name="<?php echo $this->get_field_name('email'); ?>"
+                   value="<?php echo esc_attr($email); ?>"
+                   class="widefat">
+        </p>
+
+        <p>
+            <label for="<?php echo $this->get_field_id('address'); ?>">
+                <?php esc_html_e('地址：', 'corporate-theme'); ?>
+            </label>
+            <input type="text"
+                   id="<?php echo $this->get_field_id('address'); ?>"
+                   name="<?php echo $this->get_field_name('address'); ?>"
+                   value="<?php echo esc_attr($address); ?>"
+                   class="widefat">
+        </p>
+
+        <?php
+    }
+
+    /**
+     * 4. 数据更新：保存时清理数据
+     *
+     * @param array $new_instance 用户新提交的数据
+     * @param array $old_instance 旧数据
+     * @return array 清理后的数据
+     */
+    public function update($new_instance, $old_instance)
+    {
+        // 先空着，下一步填写
+        $instance = [];
+
+        $instance['title']   = sanitize_text_field($new_instance['title']);
+        $instance['company'] = sanitize_text_field($new_instance['company']);
+        $instance['phone']   = sanitize_text_field($new_instance['phone']);
+        $instance['email']   = sanitize_text_field($new_instance['email']);
+        $instance['address'] = sanitize_text_field($new_instance['address']);
+
+        return $instance;
+    }
+}
+// 注册自定义小工具
+function corporate_register_widgets()
+{
+    register_widget('Corporate_Contact_Widget');
+}
+add_action('widgets_init', 'corporate_register_widgets');

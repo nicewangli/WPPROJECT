@@ -26,3 +26,30 @@
 .site-footer .list-unstyled li {
     margin-bottom: 0.5rem;
 }
+/* ==========================================
+   D31 - 联系信息小工具样式
+   ========================================== */
+
+/* 侧边栏联系信息：图标和文字同一行不换行 */
+.contact-phone,
+.contact-email,
+.contact-address {
+    white-space: nowrap;      /* 强制图标+文字不换行 */
+    overflow: hidden;         /* 超出部分隐藏 */
+    text-overflow: ellipsis;  /* 超出显示省略号 */
+    font-size: 0.95rem;
+}
+
+/* 侧边栏的小工具图标加间距 */
+.contact-phone i,
+.contact-email i,
+.contact-address i {
+    margin-right: 8px;
+    width: 18px;              /* 固定图标宽度，让文字对齐 */
+    text-align: center;
+}
+
+/* 页脚版本的卡片内边距调整 */
+.sidebar-footer .contact-widget-content p {
+    margin-bottom: 0.4rem;
+}
