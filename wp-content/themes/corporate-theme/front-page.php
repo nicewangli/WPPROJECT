@@ -10,8 +10,11 @@ get_header();
                 <h1 class="display-4 fw-bold mb-3">
                     <?php
                     $hero_title = get_field('hero_title', 'option');
+                    $hero_title_cus = get_theme_mod('hero_title');
                     if ($hero_title) {
                         echo esc_html($hero_title);
+                    }elseif($hero_title_cus){
+                        echo esc_html($hero_title_cus);
                     } else {
                         esc_html_e('用技术驱动企业增长', 'corporate-theme');
                     }
@@ -20,8 +23,11 @@ get_header();
                 <p class="lead mb-4">
                     <?php
                     $hero_subtitle = get_field('hero_subtitle', 'option');
+                    $hero_subtitle_cus = get_theme_mod('hero_subtitle');
                     if ($hero_subtitle) {
                         echo esc_html($hero_subtitle);
+                    }elseif($hero_subtitle_cus){
+                        echo esc_html($hero_subtitle_cus);
                     } else {
                         esc_html_e('我们为企业提供专业的网站开发、移动应用和数字化解决方案，助力业务转型升级。', 'corporate-theme');
                     }

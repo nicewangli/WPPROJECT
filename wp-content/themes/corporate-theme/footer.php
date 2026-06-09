@@ -59,13 +59,7 @@ do_action('corporate_before_footer');
 
         <div class="text-center text-muted">
             <small>
-                <?php
-                printf(
-                    esc_html__('&copy; %s %s. 保留所有权利。', 'corporate-theme'),
-                    date('Y'),
-                    get_bloginfo('name')
-                );
-                ?>
+                <?php echo wp_kses_post(get_theme_mod('footer_copyright', '&copy; 2026 公司名称。保留所有权利。')); ?>
             </small>
         </div>
     </div>

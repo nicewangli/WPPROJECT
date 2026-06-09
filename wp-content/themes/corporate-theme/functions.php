@@ -499,3 +499,135 @@ function corporate_register_widgets()
     register_widget('Corporate_Contact_Widget');
 }
 add_action('widgets_init', 'corporate_register_widgets');
+
+/**
+ * 注册主题定制器设置
+ * 
+ * @param WP_Customize_Manager $wp_customize 定制器管理器对象
+ */
+function corporate_customize_register($wp_customize)
+{
+    // ========== 第1个分区：公司颜色 ==========
+    $wp_customize->add_section('corporate_colors', [
+        'title'       => __('公司颜色', 'corporate-theme'),
+        'description' => __('自定义网站的主色调和辅助颜色', 'corporate-theme'),
+        'priority'    => 30,
+    ]);
+        // ========== 主色调颜色 ==========
+    $wp_customize->add_setting('primary_color', [
+        'default'           => '#0d6efd',
+        'transport'         => 'refresh',
+        'sanitize_callback' => 'sanitize_hex_color',
+    ]);
+
+    $wp_customize->add_control(new WP_Customize_Color_Control(
+        $wp_customize,
+        'primary_color',
+        [
+            'label'    => __('主色调颜色', 'corporate-theme'),
+            'section'  => 'corporate_colors',
+            'settings' => 'primary_color',
+        ]
+    ));
+    // ========== 辅助颜色 ==========
+    $wp_customize->add_setting('secondary_color', [
+        'default'           => '#6c757d',
+        'transport'         => 'refresh',
+        'sanitize_callback' => 'sanitize_hex_color',
+    ]);
+
+    $wp_customize->add_control(new WP_Customize_Color_Control(
+        $wp_customize,
+        'secondary_color',
+        [
+            'label'    => __('辅助颜色', 'corporate-theme'),
+            'section'  => 'corporate_colors',
+            'settings' => 'secondary_color',
+        ]
+    ));
+    // ========== 第2个分区：首页 Hero ==========
+    $wp_customize->add_section('corporate_hero', [
+        'title'       => __('首页 Hero', 'corporate-theme'),
+        'description' => __('自定义首页英雄区域的标题文字', 'corporate-theme'),
+        'priority'    => 35,
+    ]);
+
+    // Hero 标题
+    $wp_customize->add_setting('hero_title', [
+        'default'           => __('欢迎来到我们的公司', 'corporate-theme'),
+        'transport'         => 'refresh',
+        'sanitize_callback' => 'sanitize_text_field',
+    ]);
+
+    $wp_customize->add_control('hero_title', [
+        'label'    => __('Hero 标题', 'corporate-theme'),
+        'section'  => 'corporate_hero',
+        'settings' => 'hero_title',
+        'type'     => 'text',
+    ]);
+
+    // Hero 副标题
+    $wp_customize->add_setting('hero_subtitle', [
+        'default'           => __('我们致力于提供最优质的服务', 'corporate-theme'),
+        'transport'         => 'refresh',
+        'sanitize_callback' => 'sanitize_text_field',
+    ]);
+
+    $wp_customize->add_control('hero_subtitle', [
+        'label'    => __('Hero 副标题', 'corporate-theme'),
+        'section'  => 'corporate_hero',
+        'settings' => 'hero_subtitle',
+        'type'     => 'text',
+    ]);
+    // ========== 第3个分区：页脚设置 ==========
+    $wp_customize->add_section('corporate_footer', [
+        'title'       => __('页脚设置', 'corporate-theme'),
+        'description' => __('自定义页脚版权文字', 'corporate-theme'),
+        'priority'    => 40,
+    ]);
+
+    // 版权文字
+    $wp_customize->add_setting('footer_copyright', [
+        'default'           => __('&copy; 2026 公司名称。保留所有权利。', 'corporate-theme'),
+        'transport'         => 'refresh',
+        'sanitize_callback' => 'sanitize_text_field',
+    ]);
+
+    $wp_customize->add_control('footer_copyright', [
+        'label'    => __('版权文字', 'corporate-theme'),
+        'section'  => 'corporate_footer',
+        'settings' => 'footer_copyright',
+        'type'     => 'text',
+    ]);
+}
+/**
+ * 输出主题定制器的动态 CSS
+ * 挂钩到 wp_head，以内联 <style> 形式输出
+ */
+function corporate_customizer_css()
+{
+    // 读取设置值，第二个参数是默认值（兜底）
+    $primary_color   = get_theme_mod('primary_color', '#0d6efd');
+    $secondary_color = get_theme_mod('secondary_color', '#6c757d');
+    ?>
+    <style id="corporate-customizer-css">
+        :root {
+            --primary-color: <?php echo esc_attr($primary_color); ?>;
+            --secondary-color: <?php echo esc_attr($secondary_color); ?>;
+        }
+        .bg-primary {
+            background-color: var(--primary-color) !important;
+        }
+        .btn-primary {
+            background-color: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
+        }
+        .text-muted {
+            color: var(--secondary-color) !important;
+        }
+    </style>
+    <?php
+}
+add_action('wp_head', 'corporate_customizer_css', 100);
+
+add_action('customize_register', 'corporate_customize_register');
