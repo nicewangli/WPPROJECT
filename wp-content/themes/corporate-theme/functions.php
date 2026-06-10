@@ -55,7 +55,7 @@ function corporate_enqueue_assets()
         'corporate-custom',
         get_template_directory_uri() . '/assets/css/custom.css',
         ['bootstrap'],
-        '1.0.0'
+        '1.1.0'
     );
 
     wp_enqueue_script(
@@ -590,7 +590,7 @@ function corporate_customize_register($wp_customize)
     $wp_customize->add_setting('footer_copyright', [
         'default'           => __('&copy; 2026 公司名称。保留所有权利。', 'corporate-theme'),
         'transport'         => 'refresh',
-        'sanitize_callback' => 'sanitize_text_field',
+        'sanitize_callback' => 'wp_kses_post',
     ]);
 
     $wp_customize->add_control('footer_copyright', [

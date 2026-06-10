@@ -53,3 +53,195 @@
 .sidebar-footer .contact-widget-content p {
     margin-bottom: 0.4rem;
 }
+
+/* D34：CSS 收尾 + 响应式 + 打印样式 */
+/* ==========================================
+   一、排版基础（Typography）
+   ========================================== */
+
+/* 全局盒模型：padding 和 border 算在宽高里面，布局不乱 */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+/* 正文可读性：行高 1.7 是中文阅读的舒适区间 */
+body {
+    line-height: 1.7;
+    color: #333;
+}
+/* 标题层级统一 */
+h1, .h1 { font-size:2.25rem; font-weight: 700; line-height: 1.3;}
+h2, .h2 { font-size: 1.875rem; font-weight: 600; line-height: 1.35; }
+h3, .h3 { font-size: 1.5rem; font-weight: 600; line-height: 1.4; }
+h4, .h4 { font-size: 1.25rem; font-weight: 500; line-height: 1.45; }
+h5, .h5 { font-size: 1.1rem; font-weight: 500; line-height: 1.5; }
+h6, .h6 { font-size: 1rem; font-weight: 500; line-height: 1.55; }
+
+/* 链接统一：有过渡动画，focus 时有可见轮廓（无障碍） */
+a {
+    transition: color 0.2s ease;
+}
+a:focus-visible {
+    outline: 2px solid var(--primary,#1a56db);
+    outline-offset:2px;
+}
+
+/* 段落间距 */
+p {
+    margin-bottom: 1rem;
+}
+/* 图片永不溢出容器 */
+img {
+    max-width: 100%;
+    height: auto;
+}
+/* ==========================================
+   二、布局 + 组件统一
+   ========================================== */
+
+/* 内容区最小高度：页面内容太少时 footer 不会"飘"到半空 */
+.site-content {
+    min-height:60vh;
+}
+/* Hero 区手机端字号缩小 */
+.hero h1 {
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
+}
+.hero p {
+    font-size: clamp(1rem, 3vw, 1.25rem);
+}
+/* 统一按钮圆角和内边距 */
+.btn {
+    border-radius: 0.375rem;
+    padding: 0.5rem 1.25rem;
+    transition: all 0.2s ease;
+}
+/* 卡片统一样式 */
+.card {
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.2s ease;
+}
+.card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* 面包屑导航（如果有） */
+.breadcrumb {
+    background: transparent;
+    padding: 0;
+    margin-bottom: 0;
+}
+/* 分页组件（Bootstrap 自带，微调间距） */
+.pagination {
+    margin-top: 2rem;
+    justify-content: center;
+}
+/* ==========================================
+   三、自定义响应式适配（Mobile First）
+   断点：576 / 768 / 992 / 1200（与 Bootstrap 一致）
+   ========================================== */
+
+/* 📱 手机（< 576px）— 默认样式，不需要 @media */
+/* 所有"没有 @media 包裹的样式" = 手机端默认生效 */
+
+/* 导航折叠后，汉堡菜单加点间距 */
+.navbar-toggler {
+    border:none;
+    padding:0.25rem;
+}
+/* 🍃 平板竖屏（≥ 768px） */
+@media (min-width: 768px) {
+    /* Hero 区在平板上留更多上下白边 */
+    .hero {
+        padding-top: 5rem !important;
+        padding-bottom: 5rem !important;
+    }
+}
+
+/* 💻 桌面及以上（≥ 992px） */
+@media (min-width: 992px) {
+    /* 页脚订阅表单在桌面端居中更宽 */
+    .site-footer .form-control {
+        max-width: 400px;
+    }
+
+    /* 文章内容区加宽限制，保持阅读舒适 */
+    .post-content-area .col-12 {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+}
+/* 🖥️ 大桌面（≥ 1200px） */
+@media (min-width: 1200px) {
+    /* 容器最大宽度限制，太宽了文本不好读 */
+    .container {
+        max-width: 1140px;
+    }
+}
+@media print {
+    /* 隐藏不需要打印的元素 */
+    .site-header,
+    .site-footer,
+    .sidebar,
+    .widget-area,
+    .hero,
+    .breadcrumb,
+    .pagination,
+    .navbar,
+    .btn,
+    iframe,
+    video {
+        display: none !important;
+    }
+
+    /* 移除背景色、阴影，省墨 */
+    * {
+        background: transparent !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    /* 正文区域占满整页宽度 */
+    .container,
+    .row,
+    .col-12,
+    .col-md-8,
+    .col-lg-9 {
+        max-width: 100% !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* 正文黑色文字，清晰 */
+    body {
+        font-size: 12pt;
+        line-height: 1.6;
+        color: #000 !important;
+    }
+
+    /* 链接后面显示完整 URL */
+    a[href]::after {
+        content: " (" attr(href) ")";
+        font-size: 0.8em;
+        color: #666 !important;
+    }
+
+    /* 内部链接（#开头的）不显示 URL */
+    a[href^="#"]::after {
+        content: "";
+    }
+
+    /* 图片控制不跨页断裂 */
+    img {
+        max-width: 100% !important;
+        page-break-inside: avoid;
+    }
+
+    /* 标题不单独出现在页尾 */
+    h1, h2, h3, h4 {
+        page-break-after: avoid;
+    }
+}
