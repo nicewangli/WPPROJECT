@@ -20,7 +20,7 @@
             </article>
             <?php
                 endwhile;
-                the_posts_pagination();
+                get_template_part('template-parts/content', 'pagination');
             else :
             ?>
             <p><?php esc_html_e('暂无内容', 'corporate-theme'); ?></p>
