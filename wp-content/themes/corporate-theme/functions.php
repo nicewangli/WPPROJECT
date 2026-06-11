@@ -31,6 +31,10 @@ function corporate_theme_setup()
     ]);
     register_nav_menu('primary',__('主菜单','corporate-theme'));
     register_nav_menu('footer',__('底部菜单','corporate-theme'));
+    add_theme_support('woocommerce');
+    add_theme_support('wc-product-gallery-zoom');
+    add_theme_support('wc-product-gallery-lightbox');
+    add_theme_support('wc-product-gallery-slider');
 }
 
 add_action('after_setup_theme','corporate_theme_setup');
@@ -631,3 +635,32 @@ function corporate_customizer_css()
 add_action('wp_head', 'corporate_customizer_css', 100);
 
 add_action('customize_register', 'corporate_customize_register');
+
+// ========== D36 - WooCommerce 钩子测试 ==========
+// 在商品摘要下方插入自定义信息块
+add_action('woocommerce_single_product_summary','corporate_add_product_extra_info',25);
+function corporate_add_product_extra_info()
+{
+    //安全判断：只在商品单页显示
+    if (!is_product()) {
+        return;
+    }
+    echo '<div class="product-extra-info mt-3 p-3 bg-light rounded">';
+    echo '<p class="mb-1"><strong>📦 预计发货：</strong>下单后 2 个工作日内发货</p>';
+    echo '<p class="mb-0"><strong>💳 支付方式：</strong>支持支付宝 / 微信 / 银行转账</p>';
+    echo '</div>';
+}
+// ==========================================
+// WooCommerce 自定义钩子
+// ==========================================
+/**
+ * 在所有商品详情页标题上方显示促销横幅
+ * 钩子：woocommerce_before_single_product
+ * 优先级：10（默认），越小越先执行
+ */
+function corporate_woo_promo_banner() {
+    echo '<div class="alert alert-info text-center mb-3">';
+    echo '🎉 全场满 <strong>￥299</strong> 包邮！';
+    echo '</div>';
+}
+add_action('woocommerce_before_single_product', 'corporate_woo_promo_banner');

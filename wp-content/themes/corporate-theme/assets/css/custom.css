@@ -245,3 +245,32 @@ img {
         page-break-after: avoid;
     }
 }
+/* ==========================================
+   D36 - WooCommerce 基础样式适配
+   ========================================== */
+
+/* 限制商品图片最大宽度，防止撑破 Bootstrap 网格 */
+.woocommerce .product img,
+.woocommerce-page .product img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* 商品卡片里的图片统一比例 */
+.card .card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+/* 商品价格样式 */
+.product-price {
+    font-size: 1.25rem;
+    color: #dc3545;
+    font-weight: 700;
+}
+
+/* 商店页面侧边栏不被打乱 */
+.woocommerce .sidebar,
+.woocommerce-page .sidebar {
+    width: 100%;
+}

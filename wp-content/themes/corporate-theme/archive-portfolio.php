@@ -50,10 +50,20 @@ get_header();
                         <div class="tags">
                         标签：
                         <!-- 显示作品类型 -->
-                        <?php echo get_the_term_list(get_the_ID(), 'portfolio_type', '<span>', '</span>', ''); ?>
+                        <?php
+                        $portfolio_type = get_the_term_list(get_the_ID(), 'portfolio_type', '<span>', '</span>', '');
+                        if($portfolio_type && !is_wp_error($portfolio_type)) {
+                            echo $portfolio_type;
+                        }
+                        ?>
 
                         <!-- 显示作品标签 -->
-                        <?php echo get_the_term_list(get_the_ID(), 'portfolio_tag', '<span>', '</span>', ''); ?>
+                        <?php
+                        $portfolio_tag = get_the_term_list(get_the_ID(), 'portfolio_tag', '<span>', '</span>', '');
+                        if($portfolio_tag && !is_wp_error($portfolio_tag)) {
+                            echo $portfolio_tag;
+                        }
+                        ?>
                         </div>
                         <p class="card-text text-muted flex-grow-1">
                             <?php echo wp_kses_post(get_the_excerpt()); ?>
