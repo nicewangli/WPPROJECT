@@ -1,62 +1,104 @@
 <?php
 /**
- * The Template for displaying all single products
+ * 商品详情页模板
+ * 
+ * 覆盖 WooCommerce 默认的 single-product.php
+ * 使用主题统一布局（Bootstrap容器 + 主内容区 + 侧边栏）
  *
- * This template can be overridden by copying it to yourtheme/woocommerce/single-product.php.
- *
- * HOWEVER, on occasion WooCommerce will need to update template files and you
- * (the theme developer) will need to copy the new files to your theme to
- * maintain compatibility. We try to do this as little as possible, but it does
- * happen. When this occurs the version of the template file will be bumped and
- * the readme will list any important changes.
- *
- * @see         https://woocommerce.com/document/template-structure/
- * @package     WooCommerce\Templates
- * @version     1.6.4
+ * @package corporate-theme
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
+    exit;
 }
+get_header();
+?>
+<div class="container mt-4">
+    <div class="row">
+        <main id="primary" class="col-md-9">
+			<?php
+            /**
+             * 钩子1：woocommerce_before_single_product
+             * 
+             * 在单个商品循环开始前触发
+             * WC 默认在这里没有任何挂载，留给开发者的扩展点
+             */
+            do_action( 'woocommerce_before_single_product' );
+            ?>
 
-get_header( 'shop' ); ?>
+            <?php while ( have_posts() ) : ?>
+                <?php the_post(); ?>
+                <?php
+                /**
+                 * 钩子2：woocommerce_before_single_product_summary
+                 * 
+                 * WC 默认挂载：
+                 *   - woocommerce_show_product_images (优先级 10) → 商品图片画廊
+                 *   - woocommerce_show_product_sale_flash (优先级 20) → 促销标签
+                 * 
+                 * 输出的是「一楼橱窗区」—— 商品大图 + 缩略图
+                 */
+                do_action( 'woocommerce_before_single_product_summary' );
+                ?>
 
-	<?php
-		/**
-		 * woocommerce_before_main_content hook.
-		 *
-		 * @hooked woocommerce_output_content_wrapper - 10 (outputs opening divs for the content)
-		 * @hooked woocommerce_breadcrumb - 20
-		 */
-		do_action( 'woocommerce_before_main_content' );
-	?>
+                <div class="summary entry-summary">
+                    <?php
+                    /**
+                     * 钩子3：woocommerce_single_product_summary
+                     * 
+                     * WC 默认挂载（按优先级排序）：
+                     *   5  → woocommerce_template_single_title    商品标题
+                     *  10  → woocommerce_template_single_price    商品价格
+                     *  15  → woocommerce_template_single_excerpt  商品短描述
+                     *  20  → woocommerce_template_single_add_to_cart  加入购物车
+                     *  30  → woocommerce_template_single_meta    SKU / 分类 / 标签
+                     *  40  → woocommerce_template_single_sharing  社交分享按钮
+                     * 
+                     * 输出的是「二楼吊牌区」—— 所有购买决策信息
+                     * 我们包裹在 .summary 里，方便CSS控制
+                     */
+                    do_action( 'woocommerce_single_product_summary' );
+                    ?>
+                </div>
 
-		<?php while ( have_posts() ) : ?>
-			<?php the_post(); ?>
+                <?php
+                /**
+                 * 钩子4：woocommerce_after_single_product_summary
+                 * 
+                 * WC 默认挂载：
+                 *  10  → woocommerce_output_product_data_tabs  描述/评论/附加信息 Tab
+                 *  20  → woocommerce_output_related_products    相关商品推荐
+                 * 
+                 * 输出的是「三楼沙发区」—— 长描述 + 评论 + 推荐
+                 */
+                do_action( 'woocommerce_after_single_product_summary' );
+                ?>
 
-			<?php wc_get_template_part( 'content', 'single-product' ); ?>
+            <?php endwhile; ?>
 
-		<?php endwhile; // end of the loop. ?>
+            <?php
+            /**
+             * 钩子5：woocommerce_after_single_product
+             * 
+             * 在单个商品循环结束后触发
+             * WC 默认无挂载，留给开发者扩展
+             */
+            do_action( 'woocommerce_after_single_product' );
+            ?>
+		</main>
 
-	<?php
-		/**
-		 * woocommerce_after_main_content hook.
-		 *
-		 * @hooked woocommerce_output_content_wrapper_end - 10 (outputs closing divs for the content)
-		 */
-		do_action( 'woocommerce_after_main_content' );
-	?>
-
-	<?php
-		/**
-		 * woocommerce_sidebar hook.
-		 *
-		 * @hooked woocommerce_get_sidebar - 10
-		 */
-		do_action( 'woocommerce_sidebar' );
-	?>
+        <aside id="secondary" class="col-md-3">
+            <?php
+            /**
+             * woocommerce_sidebar 钩子
+             * WC 默认挂载了 woocommerce_get_sidebar()
+             * 这个函数会去找主题里的 sidebar.php（如果有的话）
+             */
+            do_action( 'woocommerce_sidebar' );
+            ?>
+        </aside>
+    </div>
+</div>
 
 <?php
-get_footer( 'shop' );
-
-/* Omit closing PHP tag at the end of PHP files to avoid "headers already sent" issues. */
+get_footer();

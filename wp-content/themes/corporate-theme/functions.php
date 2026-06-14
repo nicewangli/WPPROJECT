@@ -664,3 +664,471 @@ function corporate_woo_promo_banner() {
     echo '</div>';
 }
 add_action('woocommerce_before_single_product', 'corporate_woo_promo_banner');
+// ==========================================
+// D38：商品详情页布局重排
+// ==========================================
+/**
+ * 重排商品摘要区域（woocommerce_single_product_summary）的板块顺序
+ * 
+ * 默认顺序（按优先级）：
+ *   标题(5) → 价格(10) → 短描述(15) → 加购按钮(20) → 元信息(30) → 分享(40)
+ * 
+ * 改为：
+ *   标题(5) → 价格(10) → 加购按钮(20) → 短描述(25) → 元信息(30)
+ * 
+ * 原理：
+ *   1. 先把短描述从默认的优先级 15 上移除
+ *   2. 再把它挂到优先级 25 上（即加购按钮之后）
+ */
+function corporate_reorder_product_summary()
+{
+    //第一步：移除默认挂在优先级15上的短描述
+    remove_action(
+        'woocommerce_single_product_summary',
+        'woocommerce_template_single_excerpt',15
+    );
+    // 第2步：把短描述挂回同一个钩子，但改为优先级 25（在加购按钮 20 之后）
+    add_action(
+        'woocommerce_single_product_summary',
+        'woocommerce_template_single_excerpt',
+        25
+    );
+    remove_action('woocommerce_single_product_summary','woocommerce_template_single_title',5);
+    add_action('woocommerce_single_product_summary','woocommerce_template_single_title',35);
+}
+add_action('wp', 'corporate_reorder_product_summary');
+// ==========================================
+// D38：ACF 商品附加信息 —— 在商品摘要区输出
+// ==========================================
+/**
+ * 在商品摘要区显示 ACF 自定义字段
+ * 
+ * 挂载到 woocommerce_single_product_summary 钩子
+ * 优先级 27（在短描述 25 之后、元信息 30 之前）
+ */
+function corporate_display_product_acf_fields()
+{
+    //安全检查，只在商品单页执行
+    if (!is_product()) {
+        return;
+    }
+    //获取当前商品id
+    $product_id = get_the_ID();
+    //用get_field()读取acf字段值
+    //用第二个参数必须传入当前文章/页面的id
+    $material = get_field('material',$product_id);
+    $care_instructions = get_field('care_instructions',$product_id);
+    $designer_note = get_field('designer_note',$product_id);
+
+    // 如果三个字段都为空，就不输出任何内容
+    if ( empty( $material ) && empty( $care_instructions ) && empty( $designer_note ) ) {
+        return;
+    }
+    // 开始构建输出 HTML
+    echo '<div class="product-acf-fields mt-4 p-3 border rounded bg-light">';
+    echo '<h5 class="mb-3 fw-bold">' . esc_html__( '商品附加信息', 'corporate-theme' ) . '</h5>';
+
+    // 字段1：工艺材质（纯文本 → esc_html）
+    if ( ! empty( $material ) ) {
+        echo '<p class="mb-2">';
+        echo '<strong>' . esc_html__( '工艺材质：', 'corporate-theme' ) . '</strong> ';
+        echo esc_html( $material );
+        echo '</p>';
+    }
+
+    // 字段2：使用说明（文本域 → 允许换行，用 nl2br + esc_html）
+    if ( ! empty( $care_instructions ) ) {
+        echo '<p class="mb-2">';
+        echo '<strong>' . esc_html__( '使用说明：', 'corporate-theme' ) . '</strong><br>';
+        echo nl2br( esc_html( $care_instructions ) );
+        echo '</p>';
+    }
+
+    // 字段3：设计师手记（WYSIWYG → 可能有 HTML 标签，用 wp_kses_post）
+    if ( ! empty( $designer_note ) ) {
+        echo '<div class="designer-note mt-3">';
+        echo '<strong>' . esc_html__( '设计师手记：', 'corporate-theme' ) . '</strong>';
+        echo '<div class="mt-1">' . wp_kses_post( $designer_note ) . '</div>';
+        echo '</div>';
+    }
+
+    echo '</div>';
+}
+add_action( 'woocommerce_single_product_summary', 'corporate_display_product_acf_fields', 27 );
+// ==========================================
+// D38：相关商品推荐定制
+// ==========================================
+/**
+ * 修改相关商品数量 + 排列列数
+ * 
+ * 默认显示 4 个商品、4 列排列
+ * 改为显示 3 个商品、3 列排列
+ * 
+ * woocommerce_output_related_products_args 是一个过滤器
+ * 专门用来修改 woocommerce_output_related_products() 函数的参数
+ * 
+ * @param array $args 默认参数
+ * @return array 修改后的参数
+ */
+function corporate_customize_related_products($args) 
+{
+    //posts_per_page -> 显示多少个相关商品
+    // columns -> 每行几列
+    $args['posts_per_page'] = 2;
+    $args['columns'] = 2;
+    return $args;
+}
+add_filter( 'woocommerce_output_related_products_args', 'corporate_customize_related_products' );
+// ==========================================
+// D39：商店页 — 商品列数 + 每页数量控制
+// ==========================================
+/**
+ * 控制商品存档页每行显示几列
+ * 
+ * 钩子：loop_shop_columns（过滤器）
+ * 
+ * 默认值：4（4列网格）
+ * 参数 $columns：当前列数（整数）
+ * 返回值：修改后的列数
+ * 
+ * WC 内部会根据这个返回值给每个商品 li 加上对应的 class
+ * 比如 3 列 → .products.columns-3
+ * 然后 WC 自带的 CSS 自动适配宽度为 33.333%
+ */
+function corporate_shop_columns($columns) 
+{
+    // 把默认的 4 列改为 3 列
+    // 适合企业主题的宽版布局，商品卡片更大气
+    return 3;
+}
+add_filter('loop_shop_columns', 'corporate_shop_columns');
+/**
+ * 控制每个存档页显示多少个商品
+ * 
+ * 钩子：loop_shop_per_page（过滤器）
+ * 
+ * 默认值：12（由 WC 后台设置 → 显示 → 每页显示数量）
+ * 如果我们在这个过滤器中返回值，会覆盖后台设置
+ * 
+ * @param int $per_page 当前每页数量
+ * @return int 修改后的每页数量
+ */
+function corporate_shop_per_page($per_page) 
+{
+    // 改为每页显示 9 个商品
+    // 3 列 × 3 行 = 9 个，刚好铺满一屏
+    return 9;
+}
+add_filter('loop_shop_per_page', 'corporate_shop_per_page');
+// ==========================================
+// D39：自定义商品排序选项
+// ==========================================
+/**
+ * 修改商品排序下拉框的选项
+ * 
+ * 钩子：woocommerce_catalog_orderby（过滤器）
+ * 
+ * 默认选项：
+ *   menu_order  → 默认排序
+ *   popularity  → 按热度排序
+ *   rating      → 按评分排序
+ *   date        → 按最新排序
+ *   price       → 按价格从低到高
+ *   price-desc  → 按价格从高到低
+ * 
+ * @param array $orderby 排序选项数组
+ * @return array 修改后的排序选项
+ */
+function corporate_custom_orderby($orderby) 
+{
+    // 移除"按评分排序"（如果你的商品没有评分功能）
+    unset($orderby['rating']);
+    
+    // 在数组末尾添加一个自定义选项
+    $orderby['discount'] = __('按折扣排序', 'corporate-theme');
+
+    return $orderby;
+}
+add_filter('woocommerce_catalog_orderby', 'corporate_custom_orderby');
+/**
+ * 让自定义排序选项（discount）真正生效
+ * 
+ * 钩子：woocommerce_get_catalog_ordering_args（过滤器）
+ * 
+ * 当用户在下拉框中选择"按折扣排序"时，WC 会触发这个钩子
+ * 我们需要告诉 WC：用什么字段排序、升序还是降序
+ * 
+ * @param array $args WC 内部排序参数
+ * @return array 修改后的排序参数
+ */
+function corporate_discount_ordering_args($args) 
+{
+    // 获取当前的排序方式
+    // $_GET 参数 'orderby' 就是用户在页面上选择的值
+    $orderby_value = isset($_GET['orderby']) ? sanitize_text_field($_GET['orderby']) : '';
+
+    if ('discount' === $orderby_value) {
+        // 按自定义的 '_sale_price' meta 字段排序
+        // meta_key：要排序的自定义字段名
+        // order：DESC（降序，折扣越大越靠前）
+        // meta_type：'NUMERIC'（数值比较，不是字符串）
+        $args['meta_key'] = '_sale_price';
+        $args['orderby'] = 'meta_value_num';
+        $args['order'] = 'DESC';
+    }
+
+    return $args;
+}
+add_filter('woocommerce_get_catalog_ordering_args', 'corporate_discount_ordering_args');
+
+/**
+ * Block 1：购物车页面顶部 - 满额优惠提示
+ * 
+ * 挂载 woocommerce_before_cart 动作钩子
+ * WC()->cart->subtotal 获取当前购物车小计
+ * WC()->cart->total 获取总价（含税含运费）
+ */
+function corporate_cart_notice()
+{
+    // 只有购物车页面才显示
+    if ( ! is_cart() ) {
+        return;
+    }
+
+    // 获取购物车小计 （不含运费）
+    $subtotal = WC()->cart->subtotal;
+    //满300元门槛
+    $free_shipping_threshold = 300;
+    // 如果小计<300,显示差多少免运费
+    if ($subtotal < $free_shipping_threshold) {
+        $remaining = $free_shipping_threshold - $subtotal;
+        echo '<div class="woocommerce-message" style="background:#f0f8ff;padding:12px 20px;margin-bottom:20px;border-left:4px solid #0073aa;">';
+        echo '🎉 再购 <strong>' . wc_price( $remaining ) . '</strong> 即可享受包邮！';
+        echo '</div>';
+    } else {
+        echo '<div class="woocommerce-message" style="background:#e8f5e9;padding:12px 20px;margin-bottom:20px;border-left:4px solid #4caf50;">';
+        echo '✅ 您已满足包邮条件！';
+        echo '</div>';
+    }
+}
+add_action('woocommerce_before_cart','corporate_cart_notice');
+/**
+ * Block 2：精简结算页账单字段
+ * 
+ * 挂载 woocommerce_checkout_fields 过滤器
+ * 接收一个三维数组，返回修改后的数组
+ * 
+ * @param array $fields WooCommerce 结算字段数组
+ * @return array
+ */
+function corporate_customize_checkout_fields( $fields ) {
+    // 1. 删除"公司名"字段（用 unset 移除数组元素）
+    // unset( $fields['billing']['billing_company'] );
+    //更新"公司名"字段，将他排在最后输出
+    $fields['billing']['billing_company']['priority']=99999;
+    // 2. 把"电话"改为非必填（默认是必填的）
+    $fields['billing']['billing_phone']['required'] = false;
+
+    // 3. 把"地址2"的标签改为中文"楼层/门牌号"
+    $fields['billing']['billing_address_2']['label'] = '楼层/门牌号';
+
+    // 4. 给"邮箱"字段加一个占位提示文字
+    $fields['billing']['billing_email']['placeholder'] = 'example@company.com';
+
+    // 5. 给"订单备注"调整标签
+    $fields['order']['order_comments']['label'] = '订单备注（选填）';
+
+    return $fields;
+}
+add_filter( 'woocommerce_checkout_fields', 'corporate_customize_checkout_fields' );
+/**
+ * Block 3：自定义运费 — 满200免运费，不满200收15元
+ * 
+ * 挂载 woocommerce_package_rates 过滤器
+ * 在 WC 输出运费之前，修改所有可用运费费率
+ * 
+ * @param array  $rates   可用运费费率数组
+ * @param array  $package 当前包裹信息（含商品、目的地等）
+ * @return array
+ */
+function corporate_custom_shipping_rates( $rates, $package ) {
+    // 获取购物车小计（WC()->cart 是全局购物车对象）
+    $subtotal = WC()->cart->subtotal;
+
+    // 门槛：满200免运费
+    $free_threshold = 200;
+    foreach ( $rates as $rate_id => $rate ) {
+        // $rate 是 WC_Shipping_Rate 对象
+        // $rate->label 是费率名称（比如"Flat Rate"）
+        // $rate->cost  是费率价格
+        if ( $subtotal >= $free_threshold ) {
+            // 满200：把运费设为 0
+            $rates[ $rate_id ]->cost = 0;
+            // 改标签名：显示"免费送货"
+            $rates[ $rate_id ]->label = '免费送货';
+        } else {
+            // 不满200：改固定运费 15 元
+            $rates[ $rate_id ]->cost = 15;
+            // 改标签名：显示"标准配送 ¥15.00"
+            $rates[ $rate_id ]->label = '标准配送';
+        }
+        
+        // 处理税费（如果有按税率计算的话，这里简单清空 taxes）
+        $rates[ $rate_id ]->taxes = [];
+    }
+
+    return $rates;
+}
+add_filter( 'woocommerce_package_rates', 'corporate_custom_shipping_rates', 10, 2 );
+
+/**
+ * Block 6：货到付款（COD）额外加收 10 元手续费
+ * 
+ * 挂载 woocommerce_cart_calculate_fees 动作钩子
+ * 判断用户是否选择了 COD 支付方式，是则加收 10 元
+ * 
+ * @param WC_Cart $cart 购物车对象
+ */
+function corporate_cod_fee( $cart ) {
+    // 防止后台重复执行
+    if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
+        return;
+    }
+
+    // 空车不加
+    if ( $cart->get_cart_contents_count() === 0 ) {
+        return;
+    }
+
+    // 从 WC Session 获取用户选择的支付方式
+    // 'cod' 是 WooCommerce 货到付款的默认 method ID
+    $chosen_payment = WC()->session->get( 'chosen_payment_method' );
+
+    // 只有在结算页用户选了"货到付款"才加收
+    if ( $chosen_payment === 'cod' ) {
+        $cart->add_fee(
+            __( '货到付款手续费', 'corporate-theme' ),  // 名称
+            10,                                           // 金额 10 元
+            false                                         // 是否计税
+        );
+    }
+}
+add_action( 'woocommerce_cart_calculate_fees', 'corporate_cod_fee' );
+/**
+ * 清除运费缓存（开发调试用）
+ * 每次更新购物车时强制刷新运费
+ * 上线后可注释掉以提高性能
+ */
+function corporate_clear_shipping_cache() {
+    if ( is_cart() || is_checkout() ) {
+        $packages = WC()->cart->get_shipping_packages();
+        foreach ( $packages as $key => $package ) {
+            WC()->session->set( 'shipping_for_package_' . $key, null );
+        }
+    }
+}
+/**
+ * Block 5：满500打9折
+ * 
+ * 挂载 woocommerce_before_calculate_totals 动作钩子
+ * 遍历购物车每件商品，把价格 ×0.9
+ * 
+ * @param WC_Cart $cart 购物车对象
+ */
+function corporate_discount($cart) {
+    // 防止后台重复执行
+    if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
+        return;
+    }
+    // 获取购物车小计（看原始总价是否 ≥ 500）
+    $subtotal = $cart->subtotal;    // ← 要点2：用 $cart->subtotal 而不是 WC()->cart->subtotal
+
+    if($subtotal>=500) {
+        // 要点3：遍历购物车每件商品
+        foreach ( $cart->get_cart() as $cart_item ) {
+            // $cart_item['data'] 是 WC_Product 对象
+            // 获取原始价格
+            $original_price = $cart_item['data']->get_price();
+            // 打9折
+            $new_price = $original_price * 0.9;
+            // 设置新价格（WC 会自动重新算总价）
+            $cart_item['data']->set_price( $new_price );
+        }
+    }
+}
+add_action( 'woocommerce_before_calculate_totals', 'corporate_discount' );
+// add_action( 'woocommerce_before_calculate_totals', 'corporate_clear_shipping_cache' );
+/**
+ * Block 4：加收包装处理费
+ * 
+ * 挂载 woocommerce_cart_calculate_fees 动作钩子
+ * 用 WC()->cart->add_fee() 方法添加自定义费用
+ * 
+ * @param WC_Cart $cart 购物车对象（注意：这里是传引用！）
+ */
+function corporate_add_packaging_fee( $cart ) {
+    // 确保只在主购物车计算时执行，避免重复调用
+    if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
+        return;
+    }
+
+    // 只有购物车有商品才加费用
+    if ( $cart->get_cart_contents_count() === 0 ) {
+        return;
+    }
+
+    // 包装处理费 5 元
+    $fee_amount = 5;
+
+    // WC()->cart->add_fee() 三个参数：
+    // 参数1：费用名称（前台显示的文字）
+    // 参数2：费用金额
+    // 参数3：是否要收税（true/false）
+    $cart->add_fee(
+        __( '包装处理费', 'corporate-theme' ),
+        $fee_amount,
+        false
+    );
+}
+add_action( 'woocommerce_cart_calculate_fees', 'corporate_add_packaging_fee' );
+
+/**
+ * MVP 1：订单状态变化钩子 —— 记录订单状态变化日志
+ * 
+ * 每次订单状态变化时，自动写入一条自定义 post meta
+ * 方便后台查看订单的"状态变化历史"
+ */
+function corporate_track_order_status($order_id,$old_status,$new_status,$order) 
+{
+    //获取当前时间
+    $timestamp = current_time('mysql');
+
+    //获取当前管理员用户（如果有）
+    $user_id = get_current_user_id();
+
+    // 组装状态变化记录
+    $log_entry = sprintf(
+        '[%s] 状态从 %s → %s (操作人ID: %d)',
+        $timestamp,
+        $old_status,
+        $new_status,
+        $user_id
+    );
+    // 获取已有的状态变化日志（数组）
+    $status_log = get_post_meta($order_id, '_corporate_status_log', true);
+    if (!is_array($status_log)) {
+        $status_log = [];
+    }
+    
+    // 把新记录追加到数组头部
+    array_unshift($status_log, $log_entry);
+    
+    // 最多保留20条，防止数据膨胀
+    if (count($status_log) > 20) {
+        $status_log = array_slice($status_log, 0, 20);
+    }
+    
+    // 保存回 post meta
+    update_post_meta($order_id, '_corporate_status_log', $status_log);
+}
+add_action('woocommerce_order_status_changed', 'corporate_track_order_status', 10, 4);
