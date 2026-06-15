@@ -27,8 +27,8 @@ do_action('corporate_before_footer');
             <?php else : ?>
                 <!-- 默认第一列：品牌信息 -->
                 <div class="col-lg-4 mb-4 mb-lg-0">
-                    <h5 class="text-uppercase mb-3"><?php bloginfo('name'); ?></h5>
-                    <p class="text-muted"><?php bloginfo('description'); ?></p>
+                    <h5 class="text-uppercase mb-3"><?php echo esc_html(get_bloginfo('name')); ?></h5>
+<p class="text-muted"><?php echo esc_html(get_bloginfo('description')); ?></p>
                 </div>
 
                 <!-- 默认第二列：快速链接 -->

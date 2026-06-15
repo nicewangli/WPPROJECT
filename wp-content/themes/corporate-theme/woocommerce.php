@@ -36,12 +36,10 @@ get_header();
 
         <aside id="secondary" class="col-md-3">
             <?php
-            /**
-             * 钩子：woocommerce_sidebar
-             * WC 默认会加载插件的 sidebar.php
-             * 如果我们想用自己的侧边栏，可以在这个钩子里 remove_action 并替换
-             */ 
-            do_action('woocommerce_sidebar');
+            // 不再使用 WC 默认侧边栏，改用我们注册的专属侧边栏
+            if (is_active_sidebar('sidebar-woocommerce')) {
+                dynamic_sidebar('sidebar-woocommerce');
+            }
             ?>
         </aside>
     </div>

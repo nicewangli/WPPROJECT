@@ -157,49 +157,16 @@ get_header();
         </div>
     </div>
 </section>
-<!-- ========== 最新商品展示 ========== -->
+<!-- ========== 最新商品展示（Shortcode 版） ========== -->
 <?php if (class_exists('WooCommerce')) : ?>
-    <section class="container my-5">
-        <h2 class="section-title">
-            <?php esc_html_e('最新商品','corporate-theme'); ?>
-        </h2>
-        <div class="row">
-            <?php 
-            $products_query = new WP_Query(array(
-                'post_type' => 'product',
-                'posts_pre_page' => 4,
-                'orderby' => 'date',
-                'order' => 'DESC',
-            ));
-            if ($products_query->have_posts()) : 
-                while($products_query->have_posts()):
-                    $products_query->the_post();
-                    $product_price = get_post_meta(get_the_ID(),'_price',true);
-            ?>
-            <div class="col-md-3 mb-4">
-                <div class="card h-100">
-                    <?php if (has_post_thumbnail()) : ?>
-                    <a href="<?php the_permalink(); ?>">
-                        <?php the_post_thumbnail('medium', array('class' => 'card-img-top')); ?>
-                    </a>
-                    <p class="card-text"><?php echo esc_html(get_the_excerpt()); ?></p>
-                    <?php if ($product_price) : ?>
-                        <p class="product-price"><strong><?php echo esc_html('¥' . $product_price); ?></strong></p>
-                    <?php endif; ?>
-                    <a href="<?php echo esc_url(wc_get_cart_url() . '?add-to-cart=' . get_the_ID()); ?>" class="btn btn-primary btn-sm">
-                        <?php esc_html_e('加入购物车', 'corporate-theme'); ?>
-                    </a>
-                <?php endif; ?>
-                </div>
-            </div>
-            <?php
-        endwhile;
-        wp_reset_postdata();
-    else :
-        echo '<p>' . esc_html__('暂无可展示的商品', 'corporate-theme') . '</p>';
-    endif;
-    ?>
+<section class="latest-products py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold"><?php esc_html_e('最新商品', 'corporate-theme'); ?></h2>
+            <p class="text-muted"><?php esc_html_e('我们精选的最新产品', 'corporate-theme'); ?></p>
         </div>
-    </section>
+        <?php echo do_shortcode('[products limit="4" columns="4" orderby="date" order="DESC"]'); ?>
+    </div>
+</section>
 <?php endif; ?>
 <?php get_footer(); ?>

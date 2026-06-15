@@ -53,7 +53,7 @@ get_header();
                         <?php
                         $portfolio_type = get_the_term_list(get_the_ID(), 'portfolio_type', '<span>', '</span>', '');
                         if($portfolio_type && !is_wp_error($portfolio_type)) {
-                            echo $portfolio_type;
+                            echo wp_kses_post($portfolio_type);
                         }
                         ?>
 
@@ -61,7 +61,7 @@ get_header();
                         <?php
                         $portfolio_tag = get_the_term_list(get_the_ID(), 'portfolio_tag', '<span>', '</span>', '');
                         if($portfolio_tag && !is_wp_error($portfolio_tag)) {
-                            echo $portfolio_tag;
+                            echo wp_kses_post($portfolio_tag);
                         }
                         ?>
                         </div>

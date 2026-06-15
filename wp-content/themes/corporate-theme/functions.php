@@ -116,6 +116,15 @@ function corporate_register_sidebars()
         'before_title'  => '<h5 class="widget-title text-uppercase">',
         'after_title'   => '</h5>',
     ]);
+    register_sidebar([
+    'name'          => __('WooCommerce 侧边栏', 'corporate-theme'),
+    'id'            => 'sidebar-woocommerce',
+    'description'   => __('商店、商品分类、商品详情页面的侧边栏', 'corporate-theme'),
+    'before_widget' => '<div id="%1$s" class="widget card mb-4 %2$s">',
+    'after_widget'  => '</div></div>',
+    'before_title'  => '<h4 class="widget-title card-header">',
+    'after_title'   => '</h4><div class="card-body">',
+]);
 }
 add_action('widgets_init', 'corporate_register_sidebars');
 

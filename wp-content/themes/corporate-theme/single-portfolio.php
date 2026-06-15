@@ -83,7 +83,7 @@ get_header();
                                         '</span>'
                                     );
                                     if ($tag_terms && !is_wp_error($tag_terms)) {
-                                        echo $tag_terms;
+                                        echo wp_kses_post($tag_terms);
                                     } else {
                                         echo '<span class="text-muted">—</span>';
                                     }
