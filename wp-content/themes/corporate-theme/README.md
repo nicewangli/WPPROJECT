@@ -2,7 +2,7 @@
 
 > 专业货代公司官网 WordPress 主题，集成货运追踪系统（CPT + REST API）、WooCommerce 在线订舱、ACF 货运信息管理、邮件自动化通知等完整功能。基于 Bootstrap 5 构建，响应式设计，适配全球物流业务场景。
 
----
+***
 
 ## 项目概述
 
@@ -10,16 +10,16 @@ Freight Forwarder Pro 是一套为国际货运代理公司量身定制的 WordPr
 
 ### 核心业务场景
 
-| 场景 | 实现方案 | 技术亮点 |
-|:----|---------|:--------:|
-| 货物追踪查询 | 自定义 CPT `shipment` + 追踪编号系统 | `meta_query` 高级查询 |
-| 在线订舱服务 | WooCommerce 商品 + 自定义属性 | 模板覆盖 + 钩子重排 |
-| 物流状态 API | `GET /wp-json/freight/v1/track?tracking_no=XXX` | REST API 自定义端点 |
-| 货运信息管理 | ACF 字段组（起运港/目的港/ETD/ETA） | `acf_add_local_field_group` 代码注册 |
-| 邮件自动通知 | 订单来源标记 + 状态变化追踪 | 邮件模板覆盖 + `post_meta` |
-| 运输方式分类 | 海运/空运/陆运标签系统 | 自定义分类法 |
+| 场景       | 实现方案                                            |               技术亮点               |
+| :------- | ----------------------------------------------- | :------------------------------: |
+| 货物追踪查询   | 自定义 CPT `shipment` + 追踪编号系统                     |         `meta_query` 高级查询        |
+| 在线订舱服务   | WooCommerce 商品 + 自定义属性                          |            模板覆盖 + 钩子重排           |
+| 物流状态 API | `GET /wp-json/freight/v1/track?tracking_no=XXX` |          REST API 自定义端点          |
+| 货运信息管理   | ACF 字段组（起运港/目的港/ETD/ETA）                        | `acf_add_local_field_group` 代码注册 |
+| 邮件自动通知   | 订单来源标记 + 状态变化追踪                                 |       邮件模板覆盖 + `post_meta`       |
+| 运输方式分类   | 海运/空运/陆运标签系统                                    |              自定义分类法              |
 
----
+***
 
 ## 环境要求
 
@@ -28,17 +28,17 @@ Freight Forwarder Pro 是一套为国际货运代理公司量身定制的 WordPr
 - 必需插件：Advanced Custom Fields (ACF) Pro
 - 推荐插件：WooCommerce（在线订舱功能，主题已覆盖完整模板覆盖）
 
----
+***
 
 ## 安装
 
 1. 将 `freight-forwarder-pro` 文件夹上传到 `/wp-content/themes/`
 2. 在 WordPress 后台 → 外观 → 主题中启用
-3. 安装并激活 ACF Pro 插件（货运信息字段自动加载）
+3. 安装并激活 ACF Pro（SCF） 插件（货运信息字段自动加载）
 4. 可选：安装 WooCommerce 插件启用在线订舱功能
 5. 在"外观 → 主题设置"中配置首页 Hero 内容
 
----
+***
 
 ## 功能架构
 
@@ -93,7 +93,7 @@ GET /wp-json/freight/v1/track?tracking_no=FRE-20260708-1234
 - 客户订单完成通知模板
 - 订单状态变化自动记录日志
 
----
+***
 
 ## 文件结构
 
@@ -129,44 +129,44 @@ freight-forwarder-pro/
 └── screenshots/                     # 功能截图
 ```
 
----
+***
 
 ## 核心技术点
 
 ### 自定义文章类型（CPT）
 
-| 类型 | Slug | 用途 |
-|:----|:----|:----|
-| Shipment | `shipment` | 货运订单追踪 |
+| 类型        | Slug        | 用途     |
+| :-------- | :---------- | :----- |
+| Shipment  | `shipment`  | 货运订单追踪 |
 | Portfolio | `portfolio` | 客户案例展示 |
-| Team | `team` | 团队成员管理 |
+| Team      | `team`      | 团队成员管理 |
 
 ### 自定义分类法
 
-| 分类法 | 关联 CPT | 类型 | 用途 |
-|:------|:--------|:----|:----|
-| `shipment_status` | shipment | 层级 | 货运状态管理 |
-| `shipping_mode` | shipment | 标签 | 运输方式分类 |
-| `portfolio_type` | portfolio | 层级 | 案例类型 |
-| `portfolio_tag` | portfolio | 标签 | 案例标签 |
-| `department` | team | 层级 | 部门管理 |
-| `team_tag` | team | 标签 | 技能标签 |
+| 分类法               | 关联 CPT    | 类型 | 用途     |
+| :---------------- | :-------- | :- | :----- |
+| `shipment_status` | shipment  | 层级 | 货运状态管理 |
+| `shipping_mode`   | shipment  | 标签 | 运输方式分类 |
+| `portfolio_type`  | portfolio | 层级 | 案例类型   |
+| `portfolio_tag`   | portfolio | 标签 | 案例标签   |
+| `department`      | team      | 层级 | 部门管理   |
+| `team_tag`        | team      | 标签 | 技能标签   |
 
 ### REST API 端点
 
-| 端点 | 方法 | 用途 |
-|:----|:----|:----|
+| 端点                       | 方法  | 用途       |
+| :----------------------- | :-- | :------- |
 | `/myapp/v1/top-products` | GET | 销量前 5 商品 |
-| `/freight/v1/track` | GET | 货运追踪查询 |
+| `/freight/v1/track`      | GET | 货运追踪查询   |
 
 ### ACF 字段组
 
-| 字段组 | 关联 | 核心字段 |
-|:------|:----|:---------|
+| 字段组    | 关联       | 核心字段                       |
+| :----- | :------- | :------------------------- |
 | 货运详细信息 | shipment | 追踪编号、起运港、目的港、重量、体积、ETD、ETA |
-| 客户案例详情 | case | 客户 Logo、简介、所属行业 |
-| 产品手册下载 | product | PDF 文件上传 |
-| 主题设置 | 选项页 | Hero 标题、CTA 按钮 |
+| 客户案例详情 | case     | 客户 Logo、简介、所属行业            |
+| 产品手册下载 | product  | PDF 文件上传                   |
+| 主题设置   | 选项页      | Hero 标题、CTA 按钮             |
 
 ### 钩子使用
 
@@ -174,7 +174,7 @@ freight-forwarder-pro/
 - **过滤器钩子**：`the_content`、`woocommerce_checkout_fields`、`woocommerce_package_rates`、`woocommerce_product_get_price`、`pre_get_posts` 等
 - **自定义钩子**：`corporate_after_header`、`corporate_before_footer` 等
 
----
+***
 
 ## SEO 优化
 
@@ -184,16 +184,17 @@ freight-forwarder-pro/
 
 通过 `wp_head` 钩子输出 JSON-LD 结构化数据，在不同页面类型输出对应 Schema：
 
-| Schema 类型 | 输出页面 | 作用 |
-|:-----------|:--------|:----|
-| `Organization` | 首页 | 告诉 Google 公司名称、服务范围（海运/空运/陆运/报关） |
-| `WebSite` | 首页 | 激活搜索结果的 Sitelinks Search Box |
-| `Article` | 文章详情页 | 搜索结果展示文章作者、发布时间、封面图 |
-| `BreadcrumbList` | 面包屑导航 | 配合面包屑输出，展示页面层级路径 |
+| Schema 类型        | 输出页面  | 作用                               |
+| :--------------- | :---- | :------------------------------- |
+| `Organization`   | 首页    | 告诉 Google 公司名称、服务范围（海运/空运/陆运/报关） |
+| `WebSite`        | 首页    | 激活搜索结果的 Sitelinks Search Box     |
+| `Article`        | 文章详情页 | 搜索结果展示文章作者、发布时间、封面图              |
+| `BreadcrumbList` | 面包屑导航 | 配合面包屑输出，展示页面层级路径                 |
 
 ### Open Graph / Twitter Card
 
 手动实现 OG 标签，覆盖所有页面类型：
+
 - `og:title`、`og:description`、`og:image`、`og:url` 等核心标签
 - 文章/页面优先使用摘要和特色图片
 - 分类/标签页自动获取分类名称和描述
@@ -212,6 +213,7 @@ freight-forwarder-pro/
 ### Canonical URL
 
 所有页面输出 canonical 标签，防止重复内容问题：
+
 - 商品页可能通过加购参数访问（`?add-to-cart=`），canonical 指向原始 URL
 - 排序/筛选参数不会导致重复内容被搜索引擎降权
 
@@ -224,16 +226,17 @@ freight-forwarder-pro/
 ### 面包屑导航
 
 自定义面包屑函数 `freight_breadcrumb()`，在 `header.php` 中调用：
+
 - 首页不显示，避免重复内容
 - 支持文章、页面、自定义文章类型、分类、搜索、404 等所有页面类型
 - 语义化 HTML 结构（`<nav aria-label="breadcrumb">`）
 - 配合 BreadcrumbList Schema 结构化数据
 
----
+***
 
 ## 技术亮点
 
-###  4 个核心功能
+### 4 个核心功能
 
 1. **货物追踪系统** → 后台添加货运订单，前台用 `[tracking_form]` 查询
 2. **REST API 追踪接口** → 浏览器访问 `/wp-json/freight/v1/track?tracking_no=xxx` 返回 JSON
@@ -247,8 +250,8 @@ freight-forwarder-pro/
 - ✅ REST API 自定义端点开发
 - ✅ ACF 高级自定义字段深度集成
 - ✅ WooCommerce 全流程定制（钩子/模板/邮件）
-- ✅ WP_Query + meta_query 高级查询
-- ✅ 安全转义规范（esc_* / wp_kses_post）
+- ✅ WP\_Query + meta\_query 高级查询
+- ✅ 安全转义规范（esc\_\* / wp\_kses\_post）
 - ✅ WP Cron 定时任务 + 外部 API 请求
 - ✅ 数据迁移脚本 + 批量处理
 - ✅ SEO 结构化数据（Schema.org JSON-LD）
@@ -257,14 +260,13 @@ freight-forwarder-pro/
 - ✅ Canonical URL 防止重复内容
 - ✅ Core Web Vitals 性能优化
 
----
+***
 
-## GitHub
-
-仓库地址：https://github.com/nicewangli/WPPROJECT
+<br />
 
 ## 开发者
 
 - 项目：Freight Forwarder Pro — WordPress 货代企业主题
 - 版本：1.0.0
 - 日期：2026-07-07
+
