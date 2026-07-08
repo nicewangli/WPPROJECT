@@ -15,7 +15,7 @@ get_header();
 ?>
 <div class="container mt-4">
     <div class="row">
-        <main id="primary" class="col-md-9">
+        <main id="primary" class="col-md-7">
 			<?php
             /**
              * 钩子1：woocommerce_before_single_product
@@ -87,7 +87,7 @@ get_header();
             ?>
 		</main>
 
-        <aside id="secondary" class="col-md-3">
+        <aside id="secondary" class="col-md-5">
             <?php
             /**
              * woocommerce_sidebar 钩子

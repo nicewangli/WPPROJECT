@@ -40,3 +40,4 @@
 <?php do_action('corporate_after_header'); ?>
 <main id="content" class="site-content">
 <?php do_action('corporate_before_content'); ?>
+<?php freight_breadcrumb(); ?>

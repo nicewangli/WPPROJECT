@@ -8,7 +8,7 @@ do_action('corporate_before_footer');
         <div class="row mb-5">
             <div class="col-lg-8 mx-auto text-center">
                 <h4 class="text-white mb-2"><?php esc_html_e('订阅我们的通讯', 'corporate-theme'); ?></h4>
-                <p class="text-muted mb-4"><?php esc_html_e('获取最新产品动态和行业趋势', 'corporate-theme'); ?></p>
+                <p class="text-muted mb-4"><?php esc_html_e('获取最新物流资讯和货运政策动态', 'corporate-theme'); ?></p>
                 <form class="row g-2 justify-content-center" action="#" method="post">
                     <div class="col-sm-6 col-md-4">
                         <input type="email" class="form-control" placeholder="<?php esc_attr_e('输入您的邮箱', 'corporate-theme'); ?>" required>
@@ -49,7 +49,7 @@ do_action('corporate_before_footer');
                 <div class="col-lg-4">
                     <h5 class="text-uppercase mb-3"><?php esc_html_e('联系我们', 'corporate-theme'); ?></h5>
                     <p class="text-muted">
-                        <?php esc_html_e('地址和联系信息将在后续通过 ACF 选项页配置。', 'corporate-theme'); ?>
+                        <?php esc_html_e('电话：400-888-8888 | 邮箱：info@freightforwarder.com', 'corporate-theme'); ?>
                     </p>
                 </div>
             <?php endif; ?>

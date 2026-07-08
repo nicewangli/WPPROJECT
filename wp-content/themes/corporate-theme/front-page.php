@@ -16,7 +16,7 @@ get_header();
                     }elseif($hero_title_cus){
                         echo esc_html($hero_title_cus);
                     } else {
-                        esc_html_e('用技术驱动企业增长', 'corporate-theme');
+                        esc_html_e('全球物流 · 货通天下', 'corporate-theme');
                     }
                     ?>
                 </h1>
@@ -29,7 +29,7 @@ get_header();
                     }elseif($hero_subtitle_cus){
                         echo esc_html($hero_subtitle_cus);
                     } else {
-                        esc_html_e('我们为企业提供专业的网站开发、移动应用和数字化解决方案，助力业务转型升级。', 'corporate-theme');
+                        esc_html_e('专业国际货运代理服务，海运、空运、陆运全球门到门一站式解决方案，实时追踪货物状态。', 'corporate-theme');
                     }
                     ?>
                 </p>
@@ -39,7 +39,7 @@ get_header();
                     $cta_link = get_field('hero_cta_link', 'option');
                     $cta_text = get_field('hero_cta_text', 'option');
                     $cta_url  = $cta_link ? esc_url($cta_link['url']) : esc_url(home_url('/contact/'));
-                    $cta_label = $cta_text ? esc_html($cta_text) : esc_html__('联系我们', 'corporate-theme');
+                    $cta_label = $cta_text ? esc_html($cta_text) : esc_html__('在线询价', 'corporate-theme');
                     ?>
                     <a href="<?php echo $cta_url; ?>" class="btn btn-light btn-lg">
                         <?php echo $cta_label; ?>
@@ -49,8 +49,8 @@ get_header();
                     // 副按钮
                     $cta2_link = get_field('hero_cta2_link', 'option');
                     $cta2_text = get_field('hero_cta2_text', 'option');
-                    $cta2_url  = $cta2_link ? esc_url($cta2_link['url']) : esc_url(home_url('/portfolio/'));
-                    $cta2_label = $cta2_text ? esc_html($cta2_text) : esc_html__('查看案例', 'corporate-theme');
+                    $cta2_url  = $cta2_link ? esc_url($cta2_link['url']) : esc_url(home_url('/shipment/'));
+                    $cta2_label = $cta2_text ? esc_html($cta2_text) : esc_html__('货物追踪', 'corporate-theme');
                     ?>
                     <a href="<?php echo $cta2_url; ?>" class="btn btn-outline-light btn-lg">
                         <?php echo $cta2_label; ?>
@@ -65,34 +65,34 @@ get_header();
 <section class="services py-5">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="fw-bold"><?php esc_html_e('我们的服务', 'corporate-theme'); ?></h2>
-            <p class="text-muted"><?php esc_html_e('全方位数字化解决方案', 'corporate-theme'); ?></p>
+            <h2 class="fw-bold"><?php esc_html_e('货运服务', 'corporate-theme'); ?></h2>
+            <p class="text-muted"><?php esc_html_e('全球化物流网络，为您提供全方位货运解决方案', 'corporate-theme'); ?></p>
         </div>
         <div class="row g-4">
             <div class="col-md-4">
                 <div class="card border-0 shadow-sm h-100 text-center p-4">
                     <div class="card-body">
-                        <i class="bi bi-laptop display-5 text-primary mb-3 d-block"></i>
-                        <h5 class="card-title"><?php esc_html_e('网站开发', 'corporate-theme'); ?></h5>
-                        <p class="card-text text-muted"><?php esc_html_e('基于 WordPress 的高性能企业网站开发，从设计到上线一站式服务。', 'corporate-theme'); ?></p>
+                        <i class="bi bi-box-seam display-5 text-primary mb-3 d-block"></i>
+                        <h5 class="card-title"><?php esc_html_e('海运服务', 'corporate-theme'); ?></h5>
+                        <p class="card-text text-muted"><?php esc_html_e('整柜（FCL）与拼柜（LCL）海运服务，覆盖全球主要港口，提供门到门一站式运输。', 'corporate-theme'); ?></p>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card border-0 shadow-sm h-100 text-center p-4">
                     <div class="card-body">
-                        <i class="bi bi-phone display-5 text-primary mb-3 d-block"></i>
-                        <h5 class="card-title"><?php esc_html_e('移动应用', 'corporate-theme'); ?></h5>
-                        <p class="card-text text-muted"><?php esc_html_e('跨平台移动应用开发，覆盖 iOS 和 Android 双端。', 'corporate-theme'); ?></p>
+                        <i class="bi bi-airplane display-5 text-primary mb-3 d-block"></i>
+                        <h5 class="card-title"><?php esc_html_e('空运服务', 'corporate-theme'); ?></h5>
+                        <p class="card-text text-muted"><?php esc_html_e('高效空运货运服务，适合高价值、时效性强的货物，提供实时航班追踪与状态更新。', 'corporate-theme'); ?></p>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card border-0 shadow-sm h-100 text-center p-4">
                     <div class="card-body">
-                        <i class="bi bi-palette display-5 text-primary mb-3 d-block"></i>
-                        <h5 class="card-title"><?php esc_html_e('UI/UX 设计', 'corporate-theme'); ?></h5>
-                        <p class="card-text text-muted"><?php esc_html_e('用户体验驱动的界面设计，让产品既好看又好用。', 'corporate-theme'); ?></p>
+                        <i class="bi bi-truck display-5 text-primary mb-3 d-block"></i>
+                        <h5 class="card-title"><?php esc_html_e('陆运服务', 'corporate-theme'); ?></h5>
+                        <p class="card-text text-muted"><?php esc_html_e('跨境陆运与国内配送网络，覆盖中欧班列、中亚跨境运输，灵活高效。', 'corporate-theme'); ?></p>
                     </div>
                 </div>
             </div>
@@ -100,12 +100,23 @@ get_header();
     </div>
 </section>
 
-<!-- ========== 最新文章区 ========== -->
-<section class="latest-posts py-5 bg-light">
+<!-- ========== 货物追踪查询区 ========== -->
+<section class="tracking-section py-5 bg-light">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="fw-bold"><?php esc_html_e('最新动态', 'corporate-theme'); ?></h2>
-            <p class="text-muted"><?php esc_html_e('了解公司最新新闻和行业洞察', 'corporate-theme'); ?></p>
+            <h2 class="fw-bold"><?php esc_html_e('货物追踪', 'corporate-theme'); ?></h2>
+            <p class="text-muted"><?php esc_html_e('输入追踪编号，实时查询货物运输状态', 'corporate-theme'); ?></p>
+        </div>
+        <?php echo do_shortcode('[tracking_form]'); ?>
+    </div>
+</section>
+
+<!-- ========== 最新动态区 ========== -->
+<section class="latest-posts py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold"><?php esc_html_e('物流资讯', 'corporate-theme'); ?></h2>
+            <p class="text-muted"><?php esc_html_e('了解最新行业动态和货运政策', 'corporate-theme'); ?></p>
         </div>
         <div class="row g-4">
             <?php
@@ -151,19 +162,19 @@ get_header();
             else :
             ?>
             <div class="col-12 text-center">
-                <p class="text-muted"><?php esc_html_e('暂无最新动态，请稍后再来。', 'corporate-theme'); ?></p>
+                <p class="text-muted"><?php esc_html_e('暂无资讯，请稍后再来。', 'corporate-theme'); ?></p>
             </div>
             <?php endif; ?>
         </div>
     </div>
 </section>
-<!-- ========== 最新商品展示（Shortcode 版） ========== -->
+<!-- ========== 货运服务在线预订（WooCommerce） ========== -->
 <?php if (class_exists('WooCommerce')) : ?>
-<section class="latest-products py-5">
+<section class="latest-products py-5 bg-light">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="fw-bold"><?php esc_html_e('最新商品', 'corporate-theme'); ?></h2>
-            <p class="text-muted"><?php esc_html_e('我们精选的最新产品', 'corporate-theme'); ?></p>
+            <h2 class="fw-bold"><?php esc_html_e('在线订舱', 'corporate-theme'); ?></h2>
+            <p class="text-muted"><?php esc_html_e('在线选择货运服务，快速提交订舱需求', 'corporate-theme'); ?></p>
         </div>
         <?php echo do_shortcode('[products limit="4" columns="4" orderby="date" order="DESC"]'); ?>
     </div>

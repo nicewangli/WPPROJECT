@@ -64,7 +64,7 @@ get_header();
                                         '</span>'
                                     );
                                     if ($type_terms && !is_wp_error($type_terms)) {
-                                        echo $type_terms;
+                                        echo wp_kses_post($type_terms);
                                     } else {
                                         echo '<span class="text-muted">—</span>';
                                     }

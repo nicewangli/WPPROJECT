@@ -30,23 +30,26 @@
    D31 - 联系信息小工具样式
    ========================================== */
 
-/* 侧边栏联系信息：图标和文字同一行不换行 */
+/* 侧边栏联系信息：图标和文字对齐 */
 .contact-phone,
 .contact-email,
 .contact-address {
-    white-space: nowrap;      /* 强制图标+文字不换行 */
-    overflow: hidden;         /* 超出部分隐藏 */
-    text-overflow: ellipsis;  /* 超出显示省略号 */
+    display: flex;          /* flex 布局：图标固定，文字自动折行 */
+    align-items: flex-start; /* 顶部对齐，文字折行后从图标下方开始 */
+    gap: 8px;               /* 图标和文字间距 */
     font-size: 0.95rem;
+    word-break: break-word;
 }
 
 /* 侧边栏的小工具图标加间距 */
 .contact-phone i,
 .contact-email i,
 .contact-address i {
-    margin-right: 8px;
-    width: 18px;              /* 固定图标宽度，让文字对齐 */
+    flex-shrink: 0;         /* 图标不缩小，保持 18px 宽度 */
+    width: 18px;
     text-align: center;
+    margin-top: 4px;        /* 和第一行文字顶部对齐 */
+    margin-right: 0;        /* 用 gap 代替 margin-right */
 }
 
 /* 页脚版本的卡片内边距调整 */
@@ -467,6 +470,142 @@ img {
     letter-spacing: 0.5px;
 }
 /* ==========================================
+   货代项目 - 销售标签 + 图标 + 文章模板优化
+   ========================================== */
+
+/* 1. 销售标签父容器 position: relative — 确保标签定位正确 */
+.single-product .woocommerce-product-gallery {
+    position: relative;
+}
+
+/* 销售标签覆盖样式 */
+.single-product .onsale,
+.onsale.corporate-sale-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #dc3545;
+    color: #fff;
+    padding: 0.35rem 0.85rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-radius: 0.25rem;
+    z-index: 10;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 6px rgba(220, 53, 69, 0.3);
+    line-height: 1.4;
+}
+
+/* 2. 图标备用样式 — 确保 Bootstrap Icons 正常显示 */
+.bi {
+    display: inline-block;
+    font-family: 'bootstrap-icons' !important;
+    font-style: normal;
+    font-weight: 400 !important;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    vertical-align: middle;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* 首页服务卡片图标尺寸修复 */
+.card-body .bi.display-5 {
+    font-size: 2.5rem !important;
+    line-height: 1.2;
+}
+
+/* 3. 文章模板优化 — 内容区域 */
+.single-post .post-content-area .post-content {
+    font-size: 1.05rem;
+    line-height: 1.8;
+}
+
+.single-post .post-content-area .post-content p {
+    margin-bottom: 1.25rem;
+}
+
+/* 文章元信息美化 */
+.single-post .post-meta {
+    font-size: 0.9rem;
+    color: #6c757d;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #dee2e6;
+    margin-bottom: 1.5rem;
+}
+
+.single-post .post-meta .bi {
+    margin-right: 4px;
+}
+
+/* 作者信息框 */
+.author-bio-box {
+    background: #f8f9fa;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    border-left: 4px solid #0d6efd;
+}
+
+.author-bio-box .author-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* 相关文章卡片 */
+.related-posts-section {
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 2px solid #dee2e6;
+}
+
+/* 文章导航 */
+.post-navigation {
+    padding-top: 1.5rem;
+    margin-top: 2rem;
+    border-top: 1px solid #dee2e6;
+}
+
+.post-navigation a {
+    color: #0d6efd;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.post-navigation a:hover {
+    text-decoration: underline;
+}
+
+/* 4. 商品页摘要区样式优化 */
+.summary.entry-summary {
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 0.5rem;
+}
+
+/* 货运信息框样式 */
+.freight-shipping-info {
+    background: #f0f7ff !important;
+    border-color: #b6d4fe !important;
+}
+
+.freight-shipping-info h6 {
+    font-size: 1rem;
+    color: #0d6efd;
+}
+
+/* 5. 侧边栏卡片宽度强制撑满 */
+.woocommerce .widget.card,
+.woocommerce-page .widget.card {
+    width: 100%;
+    min-width: 0;  /* 防止 flex 子项溢出 */
+}
+
+/* ==========================================
    D43 - 响应式补充（追加在促销标签后面）
    ========================================== */
 
@@ -497,5 +636,26 @@ img {
     .woocommerce ul.products li.product {
         width: 48% !important;
         margin-right: 2%;
+    }
+}
+
+/* 3. 结算页手机端优化 */
+@media (max-width: 575.98px) {
+    /* 表单行堆叠 */
+    .woocommerce-checkout .form-row-first,
+    .woocommerce-checkout .form-row-last {
+        width: 100%;
+        float: none;
+    }
+
+    /* 下单按钮加大，方便手指点击 */
+    #place_order {
+        padding: 1rem;
+        font-size: 1.15rem;
+    }
+
+    /* 订单审核区去除 padding，不浪费空间 */
+    .woocommerce-checkout-review-order {
+        padding: 1rem;
     }
 }

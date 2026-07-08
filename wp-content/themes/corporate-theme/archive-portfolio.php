@@ -1,8 +1,10 @@
 <?php
 /**
- * 作品集归档模板：archive-portfolio.php
+ * 客户案例归档模板：archive-portfolio.php
  * 
  * 匹配 URL：/portfolio/
+ * 展示货代公司成功案例，包括客户行业、运输方案、成果数据
+ * 
  * 模板层级：archive-portfolio.php → archive.php → index.php
  */
 get_header();
@@ -13,10 +15,10 @@ get_header();
         <div class="row">
             <div class="col-12 text-center">
                 <h1 class="fw-bold mb-0">
-                    <?php esc_html_e('作品集', 'corporate-theme'); ?>
+                    <?php esc_html_e('客户案例', 'corporate-theme'); ?>
                 </h1>
                 <p class="lead mt-2 mb-0">
-                    <?php esc_html_e('查看我们的精选案例和项目', 'corporate-theme'); ?>
+                    <?php esc_html_e('了解我们如何帮助客户解决全球物流挑战', 'corporate-theme'); ?>
                 </p>
             </div>
         </div>
@@ -47,24 +49,13 @@ get_header();
                                 <?php the_title(); ?>
                             </a>
                         </h5>
-                        <div class="tags">
-                        标签：
-                        <!-- 显示作品类型 -->
                         <?php
-                        $portfolio_type = get_the_term_list(get_the_ID(), 'portfolio_type', '<span>', '</span>', '');
-                        if($portfolio_type && !is_wp_error($portfolio_type)) {
-                            echo wp_kses_post($portfolio_type);
+                        // 显示行业分类
+                        $portfolio_type = get_the_term_list(get_the_ID(), 'portfolio_type', '<p class="mb-2"><span class="badge bg-primary">', '</span>', '');
+                        if ($portfolio_type && !is_wp_error($portfolio_type)) {
+                            echo '<div class="mb-2">' . wp_kses_post($portfolio_type) . '</div>';
                         }
                         ?>
-
-                        <!-- 显示作品标签 -->
-                        <?php
-                        $portfolio_tag = get_the_term_list(get_the_ID(), 'portfolio_tag', '<span>', '</span>', '');
-                        if($portfolio_tag && !is_wp_error($portfolio_tag)) {
-                            echo wp_kses_post($portfolio_tag);
-                        }
-                        ?>
-                        </div>
                         <p class="card-text text-muted flex-grow-1">
                             <?php echo wp_kses_post(get_the_excerpt()); ?>
                         </p>
@@ -94,8 +85,8 @@ get_header();
         <?php else : ?>
         <div class="row">
             <div class="col-12 text-center py-5">
-                <h3><?php esc_html_e('暂无作品', 'corporate-theme'); ?></h3>
-                <p class="text-muted"><?php esc_html_e('作品集内容正在建设中，请稍后再来。', 'corporate-theme'); ?></p>
+                <h3><?php esc_html_e('暂无案例', 'corporate-theme'); ?></h3>
+                <p class="text-muted"><?php esc_html_e('案例内容正在建设中，请稍后再来。', 'corporate-theme'); ?></p>
             </div>
         </div>
         <?php endif; ?>
