@@ -1,12 +1,12 @@
 /**
- * Corporate Theme - 自定义样式
+ * Corporate Theme - 鑷畾涔夋牱寮?
  *
  * @package corporate-theme
  * @since 1.0.0
  */
 
-/* CSS 变量已在 style.css 定义，此处用于覆盖 Bootstrap 默认样式 */
-/* D23 开始逐步填充 */
+/* CSS 鍙橀噺宸插湪 style.css 瀹氫箟锛屾澶勭敤浜庤鐩?Bootstrap 榛樿鏍峰紡 */
+/* D23 寮€濮嬮€愭濉厖 */
 .site-header .navbar {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -27,53 +27,53 @@
     margin-bottom: 0.5rem;
 }
 /* ==========================================
-   D31 - 联系信息小工具样式
+   D31 - 鑱旂郴淇℃伅灏忓伐鍏锋牱寮?
    ========================================== */
 
-/* 侧边栏联系信息：图标和文字对齐 */
+/* 渚ц竟鏍忚仈绯讳俊鎭細鍥炬爣鍜屾枃瀛楀榻?*/
 .contact-phone,
 .contact-email,
 .contact-address {
-    display: flex;          /* flex 布局：图标固定，文字自动折行 */
-    align-items: flex-start; /* 顶部对齐，文字折行后从图标下方开始 */
-    gap: 8px;               /* 图标和文字间距 */
+    display: flex;          /* flex 甯冨眬锛氬浘鏍囧浐瀹氾紝鏂囧瓧鑷姩鎶樿 */
+    align-items: flex-start; /* 椤堕儴瀵归綈锛屾枃瀛楁姌琛屽悗浠庡浘鏍囦笅鏂瑰紑濮?*/
+    gap: 8px;               /* 鍥炬爣鍜屾枃瀛楅棿璺?*/
     font-size: 0.95rem;
     word-break: break-word;
 }
 
-/* 侧边栏的小工具图标加间距 */
+/* 渚ц竟鏍忕殑灏忓伐鍏峰浘鏍囧姞闂磋窛 */
 .contact-phone i,
 .contact-email i,
 .contact-address i {
-    flex-shrink: 0;         /* 图标不缩小，保持 18px 宽度 */
+    flex-shrink: 0;         /* 鍥炬爣涓嶇缉灏忥紝淇濇寔 18px 瀹藉害 */
     width: 18px;
     text-align: center;
-    margin-top: 4px;        /* 和第一行文字顶部对齐 */
-    margin-right: 0;        /* 用 gap 代替 margin-right */
+    margin-top: 4px;        /* 鍜岀涓€琛屾枃瀛楅《閮ㄥ榻?*/
+    margin-right: 0;        /* 鐢?gap 浠ｆ浛 margin-right */
 }
 
-/* 页脚版本的卡片内边距调整 */
+/* 椤佃剼鐗堟湰鐨勫崱鐗囧唴杈硅窛璋冩暣 */
 .sidebar-footer .contact-widget-content p {
     margin-bottom: 0.4rem;
 }
 
-/* D34：CSS 收尾 + 响应式 + 打印样式 */
+/* D34锛欳SS 鏀跺熬 + 鍝嶅簲寮?+ 鎵撳嵃鏍峰紡 */
 /* ==========================================
-   一、排版基础（Typography）
+   涓€銆佹帓鐗堝熀纭€锛圱ypography锛?
    ========================================== */
 
-/* 全局盒模型：padding 和 border 算在宽高里面，布局不乱 */
+/* 鍏ㄥ眬鐩掓ā鍨嬶細padding 鍜?border 绠楀湪瀹介珮閲岄潰锛屽竷灞€涓嶄贡 */
 *,
 *::before,
 *::after {
     box-sizing: border-box;
 }
-/* 正文可读性：行高 1.7 是中文阅读的舒适区间 */
+/* 姝ｆ枃鍙鎬э細琛岄珮 1.7 鏄腑鏂囬槄璇荤殑鑸掗€傚尯闂?*/
 body {
     line-height: 1.7;
     color: #333;
 }
-/* 标题层级统一 */
+/* 鏍囬灞傜骇缁熶竴 */
 h1, .h1 { font-size:2.25rem; font-weight: 700; line-height: 1.3;}
 h2, .h2 { font-size: 1.875rem; font-weight: 600; line-height: 1.35; }
 h3, .h3 { font-size: 1.5rem; font-weight: 600; line-height: 1.4; }
@@ -81,7 +81,7 @@ h4, .h4 { font-size: 1.25rem; font-weight: 500; line-height: 1.45; }
 h5, .h5 { font-size: 1.1rem; font-weight: 500; line-height: 1.5; }
 h6, .h6 { font-size: 1rem; font-weight: 500; line-height: 1.55; }
 
-/* 链接统一：有过渡动画，focus 时有可见轮廓（无障碍） */
+/* 閾炬帴缁熶竴锛氭湁杩囨浮鍔ㄧ敾锛宖ocus 鏃舵湁鍙杞粨锛堟棤闅滅锛?*/
 a {
     transition: color 0.2s ease;
 }
@@ -90,37 +90,37 @@ a:focus-visible {
     outline-offset:2px;
 }
 
-/* 段落间距 */
+/* 娈佃惤闂磋窛 */
 p {
     margin-bottom: 1rem;
 }
-/* 图片永不溢出容器 */
+/* 鍥剧墖姘镐笉婧㈠嚭瀹瑰櫒 */
 img {
     max-width: 100%;
     height: auto;
 }
 /* ==========================================
-   二、布局 + 组件统一
+   浜屻€佸竷灞€ + 缁勪欢缁熶竴
    ========================================== */
 
-/* 内容区最小高度：页面内容太少时 footer 不会"飘"到半空 */
+/* 鍐呭鍖烘渶灏忛珮搴︼細椤甸潰鍐呭澶皯鏃?footer 涓嶄細"椋?鍒板崐绌?*/
 .site-content {
     min-height:60vh;
 }
-/* Hero 区手机端字号缩小 */
+/* Hero 鍖烘墜鏈虹瀛楀彿缂╁皬 */
 .hero h1 {
     font-size: clamp(1.75rem, 5vw, 2.5rem);
 }
 .hero p {
     font-size: clamp(1rem, 3vw, 1.25rem);
 }
-/* 统一按钮圆角和内边距 */
+/* 缁熶竴鎸夐挳鍦嗚鍜屽唴杈硅窛 */
 .btn {
     border-radius: 0.375rem;
     padding: 0.5rem 1.25rem;
     transition: all 0.2s ease;
 }
-/* 卡片统一样式 */
+/* 鍗＄墖缁熶竴鏍峰紡 */
 .card {
     border: none;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -130,61 +130,61 @@ img {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
-/* 面包屑导航（如果有） */
+/* 闈㈠寘灞戝鑸紙濡傛灉鏈夛級 */
 .breadcrumb {
     background: transparent;
     padding: 0;
     margin-bottom: 0;
 }
-/* 分页组件（Bootstrap 自带，微调间距） */
+/* 鍒嗛〉缁勪欢锛圔ootstrap 鑷甫锛屽井璋冮棿璺濓級 */
 .pagination {
     margin-top: 2rem;
     justify-content: center;
 }
 /* ==========================================
-   三、自定义响应式适配（Mobile First）
-   断点：576 / 768 / 992 / 1200（与 Bootstrap 一致）
+   涓夈€佽嚜瀹氫箟鍝嶅簲寮忛€傞厤锛圡obile First锛?
+   鏂偣锛?76 / 768 / 992 / 1200锛堜笌 Bootstrap 涓€鑷达級
    ========================================== */
 
-/* 📱 手机（< 576px）— 默认样式，不需要 @media */
-/* 所有"没有 @media 包裹的样式" = 手机端默认生效 */
+/* 馃摫 鎵嬫満锛? 576px锛夆€?榛樿鏍峰紡锛屼笉闇€瑕?@media */
+/* 鎵€鏈?娌℃湁 @media 鍖呰９鐨勬牱寮? = 鎵嬫満绔粯璁ょ敓鏁?*/
 
-/* 导航折叠后，汉堡菜单加点间距 */
+/* 瀵艰埅鎶樺彔鍚庯紝姹夊牎鑿滃崟鍔犵偣闂磋窛 */
 .navbar-toggler {
     border:none;
     padding:0.25rem;
 }
-/* 🍃 平板竖屏（≥ 768px） */
+/* 馃崈 骞虫澘绔栧睆锛堚墺 768px锛?*/
 @media (min-width: 768px) {
-    /* Hero 区在平板上留更多上下白边 */
+    /* Hero 鍖哄湪骞虫澘涓婄暀鏇村涓婁笅鐧借竟 */
     .hero {
         padding-top: 5rem !important;
         padding-bottom: 5rem !important;
     }
 }
 
-/* 💻 桌面及以上（≥ 992px） */
+/* 馃捇 妗岄潰鍙婁互涓婏紙鈮?992px锛?*/
 @media (min-width: 992px) {
-    /* 页脚订阅表单在桌面端居中更宽 */
+    /* 椤佃剼璁㈤槄琛ㄥ崟鍦ㄦ闈㈢灞呬腑鏇村 */
     .site-footer .form-control {
         max-width: 400px;
     }
 
-    /* 文章内容区加宽限制，保持阅读舒适 */
+    /* 鏂囩珷鍐呭鍖哄姞瀹介檺鍒讹紝淇濇寔闃呰鑸掗€?*/
     .post-content-area .col-12 {
         max-width: 800px;
         margin: 0 auto;
     }
 }
-/* 🖥️ 大桌面（≥ 1200px） */
+/* 馃枼锔?澶ф闈紙鈮?1200px锛?*/
 @media (min-width: 1200px) {
-    /* 容器最大宽度限制，太宽了文本不好读 */
+    /* 瀹瑰櫒鏈€澶у搴﹂檺鍒讹紝澶浜嗘枃鏈笉濂借 */
     .container {
         max-width: 1140px;
     }
 }
 @media print {
-    /* 隐藏不需要打印的元素 */
+    /* 闅愯棌涓嶉渶瑕佹墦鍗扮殑鍏冪礌 */
     .site-header,
     .site-footer,
     .sidebar,
@@ -199,14 +199,14 @@ img {
         display: none !important;
     }
 
-    /* 移除背景色、阴影，省墨 */
+    /* 绉婚櫎鑳屾櫙鑹层€侀槾褰憋紝鐪佸ⅷ */
     * {
         background: transparent !important;
         box-shadow: none !important;
         text-shadow: none !important;
     }
 
-    /* 正文区域占满整页宽度 */
+    /* 姝ｆ枃鍖哄煙鍗犳弧鏁撮〉瀹藉害 */
     .container,
     .row,
     .col-12,
@@ -218,70 +218,70 @@ img {
         padding: 0 !important;
     }
 
-    /* 正文黑色文字，清晰 */
+    /* 姝ｆ枃榛戣壊鏂囧瓧锛屾竻鏅?*/
     body {
         font-size: 12pt;
         line-height: 1.6;
         color: #000 !important;
     }
 
-    /* 链接后面显示完整 URL */
+    /* 閾炬帴鍚庨潰鏄剧ず瀹屾暣 URL */
     a[href]::after {
         content: " (" attr(href) ")";
         font-size: 0.8em;
         color: #666 !important;
     }
 
-    /* 内部链接（#开头的）不显示 URL */
+    /* 鍐呴儴閾炬帴锛?寮€澶寸殑锛変笉鏄剧ず URL */
     a[href^="#"]::after {
         content: "";
     }
 
-    /* 图片控制不跨页断裂 */
+    /* 鍥剧墖鎺у埗涓嶈法椤垫柇瑁?*/
     img {
         max-width: 100% !important;
         page-break-inside: avoid;
     }
 
-    /* 标题不单独出现在页尾 */
+    /* 鏍囬涓嶅崟鐙嚭鐜板湪椤靛熬 */
     h1, h2, h3, h4 {
         page-break-after: avoid;
     }
 }
 /* ==========================================
-   D36 - WooCommerce 基础样式适配
+   D36 - WooCommerce 鍩虹鏍峰紡閫傞厤
    ========================================== */
 
-/* 限制商品图片最大宽度，防止撑破 Bootstrap 网格 */
+/* 闄愬埗鍟嗗搧鍥剧墖鏈€澶у搴︼紝闃叉鎾戠牬 Bootstrap 缃戞牸 */
 .woocommerce .product img,
 .woocommerce-page .product img {
     max-width: 100%;
     height: auto;
 }
 
-/* 商品卡片里的图片统一比例 */
+/* 鍟嗗搧鍗＄墖閲岀殑鍥剧墖缁熶竴姣斾緥 */
 .card .card-img-top {
     height: 200px;
     object-fit: cover;
 }
 
-/* 商品价格样式 */
+/* 鍟嗗搧浠锋牸鏍峰紡 */
 .product-price {
     font-size: 1.25rem;
     color: #dc3545;
     font-weight: 700;
 }
 
-/* 商店页面侧边栏不被打乱 */
+/* 鍟嗗簵椤甸潰渚ц竟鏍忎笉琚墦涔?*/
 .woocommerce .sidebar,
 .woocommerce-page .sidebar {
     width: 100%;
 }
 /* ==========================================
-   D43 - WooCommerce 深度样式收尾
+   D43 - WooCommerce 娣卞害鏍峰紡鏀跺熬
    ========================================== */
 
-/* 1. 消息通知：伪装成 Bootstrap Alert 组件 */
+/* 1. 娑堟伅閫氱煡锛氫吉瑁呮垚 Bootstrap Alert 缁勪欢 */
 .woocommerce-message,
 .woocommerce-info,
 .woocommerce-error {
@@ -292,46 +292,46 @@ img {
     list-style: none;
 }
 
-/* 成功消息 = 绿色（加了购物车、用了优惠券） */
+/* 鎴愬姛娑堟伅 = 缁胯壊锛堝姞浜嗚喘鐗╄溅銆佺敤浜嗕紭鎯犲埜锛?*/
 .woocommerce-message {
     color: #0f5132;
     background-color: #d1e7dd;
     border-color: #badbcc;
 }
 
-/* 普通通知 = 蓝色 */
+/* 鏅€氶€氱煡 = 钃濊壊 */
 .woocommerce-info {
     color: #055160;
     background-color: #cff4fc;
     border-color: #b6effb;
 }
 
-/* 错误消息 = 红色 */
+/* 閿欒娑堟伅 = 绾㈣壊 */
 .woocommerce-error {
     color: #842029;
     background-color: #f8d7da;
     border-color: #f5c2c7;
 }
 
-/* 消息里的链接用 Bootstrap 风格 */
+/* 娑堟伅閲岀殑閾炬帴鐢?Bootstrap 椋庢牸 */
 .woocommerce-message a,
 .woocommerce-info a {
     font-weight: 600;
 }
 
-/* 2. 商品详情页 summary 区域 */
+/* 2. 鍟嗗搧璇︽儏椤?summary 鍖哄煙 */
 .summary.entry-summary {
     padding: 1.5rem;
 }
 
-/* 商品标题在详情页 */
+/* 鍟嗗搧鏍囬鍦ㄨ鎯呴〉 */
 .single-product .product_title {
     font-size: 1.75rem;
     font-weight: 700;
     margin-bottom: 0.75rem;
 }
 
-/* 商品价格区域 */
+/* 鍟嗗搧浠锋牸鍖哄煙 */
 .single-product .price {
     font-size: 1.5rem;
     font-weight: 700;
@@ -339,14 +339,14 @@ img {
     margin-bottom: 1rem;
 }
 
-/* 加入购物车按钮 */
+/* 鍔犲叆璐墿杞︽寜閽?*/
 .single-product .single_add_to_cart_button {
     padding: 0.625rem 2rem;
     font-size: 1rem;
     border-radius: 0.375rem;
 }
 
-/* 数量输入框 + 加购按钮同一行 */
+/* 鏁伴噺杈撳叆妗?+ 鍔犺喘鎸夐挳鍚屼竴琛?*/
 .single-product .cart {
     display: flex;
     flex-wrap: wrap;
@@ -354,7 +354,7 @@ img {
     gap: 0.75rem;
 }
 
-/* SKU/分类/标签（产品元数据） */
+/* SKU/鍒嗙被/鏍囩锛堜骇鍝佸厓鏁版嵁锛?*/
 .single-product .product_meta {
     margin-top: 1.5rem;
     padding-top: 1rem;
@@ -363,20 +363,20 @@ img {
     color: #6c757d;
 }
 
-/* 商品详情 tab 标签页 */
+/* 鍟嗗搧璇︽儏 tab 鏍囩椤?*/
 .woocommerce-tabs {
     margin-top: 2.5rem;
     padding-top: 1.5rem;
     border-top: 1px solid #dee2e6;
 }
 
-/* 3. 购物车表格 */
+/* 3. 璐墿杞﹁〃鏍?*/
 .woocommerce-cart table.cart {
     width: 100%;
     border-collapse: collapse;
 }
 
-/* 表头 + 单元格统一样式 */
+/* 琛ㄥご + 鍗曞厓鏍肩粺涓€鏍峰紡 */
 .woocommerce-cart table.cart th,
 .woocommerce-cart table.cart td {
     padding: 0.75rem;
@@ -385,13 +385,13 @@ img {
     border-bottom: 1px solid #dee2e6;
 }
 
-/* 商品图片在购物车里 */
+/* 鍟嗗搧鍥剧墖鍦ㄨ喘鐗╄溅閲?*/
 .woocommerce-cart table.cart img {
     max-width: 80px;
     height: auto;
 }
 
-/* 数量输入框 */
+/* 鏁伴噺杈撳叆妗?*/
 .woocommerce-cart table.cart input.qty {
     width: 60px;
     padding: 0.375rem 0.5rem;
@@ -400,19 +400,19 @@ img {
     text-align: center;
 }
 
-/* 更新购物车 + 结算按钮 */
+/* 鏇存柊璐墿杞?+ 缁撶畻鎸夐挳 */
 .woocommerce-cart .coupon button,
 .woocommerce-cart .checkout-button {
     border-radius: 0.375rem;
     padding: 0.5rem 1.25rem;
 }
 
-/* 4. 结算页表单 */
+/* 4. 缁撶畻椤佃〃鍗?*/
 .woocommerce-checkout .form-row {
     margin-bottom: 1rem;
 }
 
-/* 输入框统一样式 */
+/* 杈撳叆妗嗙粺涓€鏍峰紡 */
 .woocommerce-checkout .input-text {
     display: block;
     width: 100%;
@@ -423,14 +423,14 @@ img {
     transition: border-color 0.15s ease;
 }
 
-/* 输入框聚焦时蓝色边框，与 Bootstrap 一致 */
+/* 杈撳叆妗嗚仛鐒︽椂钃濊壊杈规锛屼笌 Bootstrap 涓€鑷?*/
 .woocommerce-checkout .input-text:focus {
     border-color: #86b7fe;
     outline: 0;
     box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
 
-/* 下单按钮 */
+/* 涓嬪崟鎸夐挳 */
 .woocommerce-checkout .checkout-button,
 #place_order {
     width: 100%;
@@ -439,7 +439,7 @@ img {
     border-radius: 0.375rem;
 }
 
-/* 结算审核区（已选支付等） */
+/* 缁撶畻瀹℃牳鍖猴紙宸查€夋敮浠樼瓑锛?*/
 .woocommerce-checkout-review-order {
     margin-top: 2rem;
     padding: 1.5rem;
@@ -447,14 +447,14 @@ img {
     border-radius: 0.5rem;
 }
 
-/* 订单商品明细表格 */
+/* 璁㈠崟鍟嗗搧鏄庣粏琛ㄦ牸 */
 .woocommerce-checkout-review-order table.shop_table th,
 .woocommerce-checkout-review-order table.shop_table td {
     padding: 0.75rem;
     border-bottom: 1px solid #dee2e6;
 }
 
-/* 5. 促销标签样式 */
+/* 5. 淇冮攢鏍囩鏍峰紡 */
 .onsale {
     position: absolute;
     top: 10px;
@@ -470,15 +470,15 @@ img {
     letter-spacing: 0.5px;
 }
 /* ==========================================
-   货代项目 - 销售标签 + 图标 + 文章模板优化
+   璐т唬椤圭洰 - 閿€鍞爣绛?+ 鍥炬爣 + 鏂囩珷妯℃澘浼樺寲
    ========================================== */
 
-/* 1. 销售标签父容器 position: relative — 确保标签定位正确 */
+/* 1. 閿€鍞爣绛剧埗瀹瑰櫒 position: relative 鈥?纭繚鏍囩瀹氫綅姝ｇ‘ */
 .single-product .woocommerce-product-gallery {
     position: relative;
 }
 
-/* 销售标签覆盖样式 */
+/* 閿€鍞爣绛捐鐩栨牱寮?*/
 .single-product .onsale,
 .onsale.corporate-sale-badge {
     position: absolute;
@@ -497,7 +497,7 @@ img {
     line-height: 1.4;
 }
 
-/* 2. 图标备用样式 — 确保 Bootstrap Icons 正常显示 */
+/* 2. 鍥炬爣澶囩敤鏍峰紡 鈥?纭繚 Bootstrap Icons 姝ｅ父鏄剧ず */
 .bi {
     display: inline-block;
     font-family: 'bootstrap-icons' !important;
@@ -511,13 +511,13 @@ img {
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* 首页服务卡片图标尺寸修复 */
+/* 棣栭〉鏈嶅姟鍗＄墖鍥炬爣灏哄淇 */
 .card-body .bi.display-5 {
     font-size: 2.5rem !important;
     line-height: 1.2;
 }
 
-/* 3. 文章模板优化 — 内容区域 */
+/* 3. 鏂囩珷妯℃澘浼樺寲 鈥?鍐呭鍖哄煙 */
 .single-post .post-content-area .post-content {
     font-size: 1.05rem;
     line-height: 1.8;
@@ -527,7 +527,7 @@ img {
     margin-bottom: 1.25rem;
 }
 
-/* 文章元信息美化 */
+/* 鏂囩珷鍏冧俊鎭編鍖?*/
 .single-post .post-meta {
     font-size: 0.9rem;
     color: #6c757d;
@@ -540,7 +540,7 @@ img {
     margin-right: 4px;
 }
 
-/* 作者信息框 */
+/* 浣滆€呬俊鎭 */
 .author-bio-box {
     background: #f8f9fa;
     border-radius: 0.5rem;
@@ -556,14 +556,14 @@ img {
     object-fit: cover;
 }
 
-/* 相关文章卡片 */
+/* 鐩稿叧鏂囩珷鍗＄墖 */
 .related-posts-section {
     margin-top: 2.5rem;
     padding-top: 2rem;
     border-top: 2px solid #dee2e6;
 }
 
-/* 文章导航 */
+/* 鏂囩珷瀵艰埅 */
 .post-navigation {
     padding-top: 1.5rem;
     margin-top: 2rem;
@@ -580,14 +580,14 @@ img {
     text-decoration: underline;
 }
 
-/* 4. 商品页摘要区样式优化 */
+/* 4. 鍟嗗搧椤垫憳瑕佸尯鏍峰紡浼樺寲 */
 .summary.entry-summary {
     padding: 1.5rem;
     background: #fff;
     border-radius: 0.5rem;
 }
 
-/* 货运信息框样式 */
+/* 璐ц繍淇℃伅妗嗘牱寮?*/
 .freight-shipping-info {
     background: #f0f7ff !important;
     border-color: #b6d4fe !important;
@@ -598,18 +598,34 @@ img {
     color: #0d6efd;
 }
 
-/* 5. 侧边栏卡片宽度强制撑满 */
-.woocommerce .widget.card,
-.woocommerce-page .widget.card {
+/* 5. 渚ц竟鏍忓崱鐗囧搴﹀己鍒舵拺婊?*/
+#secondary .widget.card {
+
     width: 100%;
-    min-width: 0;  /* 防止 flex 子项溢出 */
+    min-width: 0;  /* 闃叉 flex 瀛愰」婧㈠嚭 */
+}
+/*璋冩暣鍗＄墖锛?026-7-9*/
+/* 妗岄潰绔細鍗＄墖鍚戝彸灞曞紑鍒颁富鍐呭鍖?*/
+@media (min-width: 992px) {
+
+    #secondary .widget.card {
+        width: 200%;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* 闃叉鐖跺鍣ㄨ鍓孩鍑洪儴鍒?*/
+
+    #secondary {
+        overflow: visible !important;
+    }
 }
 
 /* ==========================================
-   D43 - 响应式补充（追加在促销标签后面）
+   D43 - 鍝嶅簲寮忚ˉ鍏咃紙杩藉姞鍦ㄤ績閿€鏍囩鍚庨潰锛?
    ========================================== */
 
-/* 1. 购物车表格：手机上添加横向滚动容器 */
+/* 1. 璐墿杞﹁〃鏍硷細鎵嬫満涓婃坊鍔犳í鍚戞粴鍔ㄥ鍣?*/
 @media (max-width: 767.98px) {
     .woocommerce-cart table.cart {
         display: block;
@@ -618,7 +634,35 @@ img {
     }
 }
 
-/* 2. 商品网格：手机上 1 列 */
+/* 手机端购物车：清除 cart totals 浮动，防止与商品表格重叠 */
+@media (max-width: 767.98px) {
+    .woocommerce-cart .cart-collaterals {
+        clear: both;
+        overflow: hidden;
+    }
+    .woocommerce-cart .cart-collaterals .cart_totals {
+        width: 100% !important;
+        float: none !important;
+    }
+}
+
+/* 手机端购物车：Cart Block 区块版，强制上下堆叠、防止重叠 */
+@media (max-width: 767.98px) {
+    .wc-block-cart {
+        flex-wrap: wrap !important;
+    }
+    .wc-block-cart .wc-block-cart__main,
+    .wc-block-cart .wc-block-cart__totals-wrapper {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+    .wc-block-cart .wc-block-cart__totals-wrapper {
+        margin-top: 1.5rem;
+    }
+}
+
+/* 2. 鍟嗗搧缃戞牸锛氭墜鏈轰笂 1 鍒?*/
 @media (max-width: 767.98px) {
     .woocommerce ul.products {
         display: flex;
@@ -631,7 +675,7 @@ img {
     }
 }
 
-/* 平板上商品 2 列 */
+/* 骞虫澘涓婂晢鍝?2 鍒?*/
 @media (min-width: 768px) and (max-width: 991.98px) {
     .woocommerce ul.products li.product {
         width: 48% !important;
@@ -639,22 +683,22 @@ img {
     }
 }
 
-/* 3. 结算页手机端优化 */
+/* 3. 缁撶畻椤垫墜鏈虹浼樺寲 */
 @media (max-width: 575.98px) {
-    /* 表单行堆叠 */
+    /* 琛ㄥ崟琛屽爢鍙?*/
     .woocommerce-checkout .form-row-first,
     .woocommerce-checkout .form-row-last {
         width: 100%;
         float: none;
     }
 
-    /* 下单按钮加大，方便手指点击 */
+    /* 涓嬪崟鎸夐挳鍔犲ぇ锛屾柟渚挎墜鎸囩偣鍑?*/
     #place_order {
         padding: 1rem;
         font-size: 1.15rem;
     }
 
-    /* 订单审核区去除 padding，不浪费空间 */
+    /* 璁㈠崟瀹℃牳鍖哄幓闄?padding锛屼笉娴垂绌洪棿 */
     .woocommerce-checkout-review-order {
         padding: 1rem;
     }

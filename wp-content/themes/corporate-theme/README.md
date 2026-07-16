@@ -10,14 +10,14 @@ Freight Forwarder Pro 是一套为国际货运代理公司量身定制的 WordPr
 
 ### 核心业务场景
 
-| 场景       | 实现方案                                            |               技术亮点               |
-| :------- | ----------------------------------------------- | :------------------------------: |
-| 货物追踪查询   | 自定义 CPT `shipment` + 追踪编号系统                     |         `meta_query` 高级查询        |
-| 在线订舱服务   | WooCommerce 商品 + 自定义属性                          |            模板覆盖 + 钩子重排           |
-| 物流状态 API | `GET /wp-json/freight/v1/track?tracking_no=XXX` |          REST API 自定义端点          |
-| 货运信息管理   | ACF 字段组（起运港/目的港/ETD/ETA）                        | `acf_add_local_field_group` 代码注册 |
-| 邮件自动通知   | 订单来源标记 + 状态变化追踪                                 |       邮件模板覆盖 + `post_meta`       |
-| 运输方式分类   | 海运/空运/陆运标签系统                                    |              自定义分类法              |
+| 场景       | 实现方案                                                                                                                       |               技术亮点               |
+| :------- | -------------------------------------------------------------------------------------------------------------------------- | :------------------------------: |
+| 货物追踪查询   | 自定义 CPT `shipment` + 追踪编号系统（FRE-20260708-0001）（FRE-20260707-0002）（FRE-20260706-0003）（FRE-20260705-0004）（FRE-20260704-0005） |         `meta_query` 高级查询        |
+| 在线订舱服务   | WooCommerce 商品 + 自定义属性                                                                                                     |            模板覆盖 + 钩子重排           |
+| 物流状态 API | `GET /wp-json/freight/v1/track?tracking_no=XXX`                                                                            |          REST API 自定义端点          |
+| 货运信息管理   | ACF 字段组（起运港/目的港/ETD/ETA）                                                                                                   | `acf_add_local_field_group` 代码注册 |
+| 邮件自动通知   | 订单来源标记 + 状态变化追踪                                                                                                            |       邮件模板覆盖 + `post_meta`       |
+| 运输方式分类   | 海运/空运/陆运标签系统                                                                                                               |              自定义分类法              |
 
 ***
 
@@ -80,6 +80,13 @@ GET /wp-json/freight/v1/track?tracking_no=FRE-20260708-1234
 
 在任意页面/文章中使用 `[tracking_form]` 短代码，即可显示货物追踪查询表单，用户输入追踪编号后实时查询并展示详细货运信息。
 
+查询采用 **AJAX 异步请求**，页面不刷新，用户体验流畅：
+
+- 提交查询后显示加载动画（spinner）
+- 后端通过 `admin-ajax.php` 处理请求，复用 REST API 查询逻辑
+- 返回 JSON 数据后前端动态渲染结果卡片
+- 安全机制：`wp_nonce` 验证请求来源、`sanitize_text_field` 清理输入
+
 ### WooCommerce 在线订舱
 
 - 将货运服务作为商品管理，支持在线下单
@@ -110,8 +117,10 @@ freight-forwarder-pro/
 ├── search.php / 404.php
 ├── sidebar.php
 ├── assets/
-│   └── css/
-│       └── custom.css               # 自定义样式
+│   ├── css/
+│   │   └── custom.css               # 自定义样式
+│   └── js/
+│       └── tracking.js              # 追踪查询 AJAX（异步请求，不刷新页面）
 ├── template-parts/
 │   └── content-pagination.php
 ├── woocommerce.php                  # WooCommerce 兜底模板
@@ -246,9 +255,10 @@ freight-forwarder-pro/
 ### 技术能力证明
 
 - ✅ WordPress 模板层级 + 模板覆盖
-- ✅ 自定义文章类型 + 分类法完整实现
+- ✅ 自定义文章类型 （CPT）+ 分类法完整实现（Taxonomy）
 - ✅ REST API 自定义端点开发
 - ✅ ACF 高级自定义字段深度集成
+- ✅ shortcode短代码应用
 - ✅ WooCommerce 全流程定制（钩子/模板/邮件）
 - ✅ WP\_Query + meta\_query 高级查询
 - ✅ 安全转义规范（esc\_\* / wp\_kses\_post）
@@ -259,6 +269,7 @@ freight-forwarder-pro/
 - ✅ 面包屑导航 + 语义化 HTML
 - ✅ Canonical URL 防止重复内容
 - ✅ Core Web Vitals 性能优化
+- ✅ AJAX 异步查询 + admin-ajax.php 安全请求
 
 ***
 

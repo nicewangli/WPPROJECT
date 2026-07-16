@@ -11,7 +11,7 @@ get_header();
 ?>
 <div class="container mt-4">
     <div class="row">
-        <main id="primary" class="col-md-9">
+        <main id="primary" class="col-md-8">
             <?php
             /**
              * 钩子：woocommerce_before_main_content
@@ -34,7 +34,7 @@ get_header();
             ?>
         </main>
 
-        <aside id="secondary" class="col-md-3">
+        <aside id="secondary" class="col-md-4">
             <?php
             // 不再使用 WC 默认侧边栏，改用我们注册的专属侧边栏
             if (is_active_sidebar('sidebar-woocommerce')) {

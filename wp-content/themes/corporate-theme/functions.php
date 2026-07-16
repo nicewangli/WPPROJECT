@@ -29,8 +29,12 @@ function corporate_theme_setup()
         'gallery',
         'caption',
     ]);
-    register_nav_menu('primary',__('主菜单','corporate-theme'));
-    register_nav_menu('footer',__('底部菜单','corporate-theme'));
+
+    // 注册导航菜单位置
+    register_nav_menus([
+        'primary' => __('主菜单', 'corporate-theme'),
+        'footer'  => __('页脚菜单', 'corporate-theme'),
+    ]);
     add_theme_support('woocommerce');
     add_theme_support('wc-product-gallery-zoom');
     add_theme_support('wc-product-gallery-lightbox');
